@@ -3,63 +3,70 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://dgibbs.me/about/</loc>
-    <lastmod>2020-08-05T21:35:52-03:00</lastmod>
+    <loc>/about/</loc>
+    <lastmod>2020-08-09T20:23:50-03:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dgibbs.me/categories/</loc>
+    <loc>/</loc>
+    <lastmod>2020-08-09T20:23:50-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/categories/"
+                href="/pt/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/categories/"
+                href="/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/</loc>
+    <loc>/tags/me/</loc>
+    <lastmod>2020-08-09T20:23:50-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-08-09T20:23:50-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/"
+                href="/pt/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/"
+                href="/tags/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/series/</loc>
+    <loc>/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/series/"
+                href="/pt/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/series/"
+                href="/categories/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/tags/</loc>
+    <loc>/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/tags/"
+                href="/pt/series/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/tags/"
+                href="/series/"
                 />
   </url>
   

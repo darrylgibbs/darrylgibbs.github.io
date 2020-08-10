@@ -3,58 +3,58 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://dgibbs.me/pt/categories/</loc>
+    <loc>/pt/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/categories/"
+                href="/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/categories/"
+                href="/pt/categories/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/pt/</loc>
+    <loc>/pt/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/"
+                href="/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/"
+                href="/pt/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/pt/series/</loc>
+    <loc>/pt/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/series/"
+                href="/series/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/series/"
+                href="/pt/series/"
                 />
   </url>
   
   <url>
-    <loc>https://dgibbs.me/pt/tags/</loc>
+    <loc>/pt/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://dgibbs.me/tags/"
+                href="/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://dgibbs.me/pt/tags/"
+                href="/pt/tags/"
                 />
   </url>
   
