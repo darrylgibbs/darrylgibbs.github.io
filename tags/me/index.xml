@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>me on darryl gibbs</title>
-    <link>/tags/me/</link>
+    <link>https://dgibbs.me/tags/me/</link>
     <description>Recent content in me on darryl gibbs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sun, 09 Aug 2020 20:23:50 -0300</lastBuildDate>
     
-	<atom:link href="/tags/me/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://dgibbs.me/tags/me/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>About</title>
-      <link>/about/</link>
+      <link>https://dgibbs.me/about/</link>
       <pubDate>Sun, 09 Aug 2020 20:23:50 -0300</pubDate>
       
-      <guid>/about/</guid>
+      <guid>https://dgibbs.me/about/</guid>
       <description>Hi, I&amp;rsquo;m Darryl.
 I&amp;rsquo;m a tech enthusiast who is trying to rearrage a sporadic array of IT knowledge into something more logical that will hopefully one day turn into a career.
 I dabble in web development (this Hugo based blog is one such project), server hosting, homelabbing, gaming, etc.
