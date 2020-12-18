@@ -3,8 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://dgibbs.me/tags/chamilo/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://dgibbs.me/</loc>
-    <lastmod>2020-08-22T06:46:08-03:00</lastmod>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -18,12 +23,37 @@
   </url>
   
   <url>
-    <loc>https://dgibbs.me/tags/formula-1/</loc>
-    <lastmod>2020-08-22T06:46:08-03:00</lastmod>
+    <loc>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dgibbs.me/tags/lms/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
   </url>
   
   <url>
     <loc>https://dgibbs.me/posts/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dgibbs.me/tags/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://dgibbs.me/pt/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://dgibbs.me/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://dgibbs.me/tags/formula-1/</loc>
     <lastmod>2020-08-22T06:46:08-03:00</lastmod>
   </url>
   
@@ -35,21 +65,6 @@
   <url>
     <loc>https://dgibbs.me/tags/sebastian-vettel/</loc>
     <lastmod>2020-08-22T06:46:08-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dgibbs.me/tags/</loc>
-    <lastmod>2020-08-22T06:46:08-03:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://dgibbs.me/pt/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://dgibbs.me/tags/"
-                />
   </url>
   
   <url>

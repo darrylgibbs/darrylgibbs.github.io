@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 22 Aug 2020 06:46:08 -0300</lastBuildDate>
-    
-	<atom:link href="https://dgibbs.me/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Fri, 18 Dec 2020 12:00:37 -0300</lastBuildDate><atom:link href="https://dgibbs.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Install Chamilo on Ubuntu Server</title>
+      <link>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</link>
+      <pubDate>Fri, 18 Dec 2020 12:00:37 -0300</pubDate>
+      
+      <guid>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</guid>
+      <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
+Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+  A domain pointed at the server.
+  Install necessary (and extra) software First, update the system.
+sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
+    </item>
     
     <item>
       <title>Seb Vettel deserves better</title>

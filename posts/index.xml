@@ -6,8 +6,202 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 22 Aug 2020 06:46:08 -0300</lastBuildDate>
+        <lastBuildDate>Fri, 18 Dec 2020 12:00:37 -0300</lastBuildDate>
         <atom:link href="https://dgibbs.me/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>How to Install Chamilo on Ubuntu Server</title>
+            <link>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</link>
+            <pubDate>Fri, 18 Dec 2020 12:00:37 -0300</pubDate>
+            
+            <guid>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</guid>
+            <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
+Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+  A domain pointed at the server.
+  Install necessary (and extra) software First, update the system.
+sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
+            <content type="html"><![CDATA[<p>This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from <strong>[Vultr](<a href="https://www.vultr.com/docs/how-to-install-chamilo-1-11-8-on-ubuntu-18-04-lts">How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com</a>)</strong>. Kudos to those guys.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>
+<p>Fresh Ubuntu Server install on a VPS with SUDO access.</p>
+</li>
+<li>
+<p>A domain pointed at the server.</p>
+</li>
+</ul>
+<h2 id="install-necessary-and-extra-software">Install necessary (and extra) software</h2>
+<p>First, update the system.</p>
+<pre><code>sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt clean -y &amp;&amp; sudo reboot
+</code></pre><p>Then, install software we will use for the server.</p>
+<pre><code>sudo apt install -y ufw \
+fail2ban \
+unzip \
+zip \
+git \
+tree \
+openssh-server \
+net-tools \
+curl \
+software-properties-common
+</code></pre><h2 id="update-ufw-firewall-rules">Update UFW firewall rules</h2>
+<pre><code>sudo ufw allow in ssh &amp;&amp; \
+sudo ufw allow in http &amp;&amp; \
+sudo ufw allow in https &amp;&amp; \
+sudo ufw enable
+</code></pre><h2 id="install-setup-and-secure-mariadb">Install, setup and secure MariaDB</h2>
+<p>To install the latest version of MariaDB directly, you will need to add the MariaDB repos. Confirm the latest version <a href="https://mariadb.org/download/">here</a>, and update the version number and Ubuntu version as needed.</p>
+<pre><code>sudo apt install -y software-properties-common &amp;&amp; \
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 &amp;&amp; \
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirrors.accretive-networks.net/mariadb/repo/10.5/ubuntu focal main' &amp;&amp; \
+sudo apt update &amp;&amp; \
+sudo apt install -y mariadb-server
+</code></pre><p>During the install, provide a strong password for MariaDB. If not requested, no sweat, we&rsquo;ll secure it in the next block.</p>
+<p>Ok, now fire up MariaDB and also make it start up automatically with the system on reboot:</p>
+<pre><code>sudo systemctl start mariadb.service
+sudo systemctl enable mariadb.service
+</code></pre><p>Now, let&rsquo;s secure MariaDB:</p>
+<pre><code>sudo /usr/bin/mysql_secure_installation
+</code></pre><p>A prompt will come up, answer as below, but remember to provide a <strong>strong</strong> root password now if not done so previously.</p>
+<pre><code>Enter current password for root (enter for none): strong-ass-MariaDB-root-password
+Change the root password? [Y/n]: n
+Remove anonymous users? [Y/n]: y
+Disallow root login remotely? [Y/n]: y
+Remove test database and access to it? [Y/n]: y
+Reload privilege tables now? [Y/n]: y
+</code></pre><h2 id="install-apache">Install Apache</h2>
+<pre><code>sudo apt install -y apache2
+</code></pre><p>Go to the server URL to confirm Apache is up and running.</p>
+<p>Remove the standard Apache welcome page.</p>
+<pre><code>sudo mv /var/www/html/index.html /var/www/html/index.html.old
+</code></pre><p>Backup the default .conf file and block Apache from exposing the web root directory:</p>
+<pre><code>sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
+sudo sed -i &quot;s/Options Indexes FollowSymLinks/Options FollowSymLinks/&quot; /etc/apache2/apache2.conf
+</code></pre><p>Enable the Apache rewrite module, start the service and auto-start</p>
+<pre><code>sudo a2enmod rewrite
+sudo systemctl start apache2.service
+sudo systemctl enable apache2.service
+</code></pre><h2 id="install-latest-php-packages">Install latest PHP Packages</h2>
+<p>In order to run the latest PHP 7.x packages, we need to add the repo:</p>
+<pre><code>sudo add-apt-repository -y ppa:ondrej/php
+sudo apt update
+sudo apt upgrade -y
+sudo apt autoremove -y
+</code></pre><p>Install the latest 7.4 packages. Before doing so, confirm the latest version <a href="https://www.php.net/downloads.php">here</a>, and if higher the 7.4, substitute that version wherever you see <strong>7.4</strong>.</p>
+<pre><code>sudo apt install -y php7.4 php7.4-opcache php7.4-cli php7.4-curl php7.4-common php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql libapache2-mod-php7.4 php7.4-soap php7.4-xml php7.4-xmlrpc php7.4-zip php7.4-ldap php-apcu-bc
+</code></pre><p>Backup and then edit the PHP config file pertaining to Apache:</p>
+<pre><code>sudo cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/apache2/php.ini.bak
+sudo sed -i 's#;date.timezone =#date.timezone = America/Sao_Paulo#' /etc/php/7.4/apache2/php.ini
+</code></pre><p>Right, now let&rsquo;s adjust the php.ini file to meet the necessities of Chamilo LMS:</p>
+<pre><code>sudo nano /etc/php/7.4/apache2/php.ini
+</code></pre><p>Find these:</p>
+<pre><code>session.cookie_httponly =
+upload_max_filesize = 2M
+post_max_size = 8M
+</code></pre><p>And update them to look like these:</p>
+<pre><code>session.cookie_httponly = 1
+upload_max_filesize = 100M
+post_max_size = 100M
+</code></pre><h2 id="install-chamilo">Install Chamilo</h2>
+<h3 id="setup-the-database">Setup the Database</h3>
+<pre><code>CREATE DATABASE chamilo;
+CREATE USER 'chamilo'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON chamilo.* TO 'chamilo'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+</code></pre><p>Make sure to update at least the <strong>password</strong> with your prefered choice, and the DB name and user should you wish to.</p>
+<h3 id="get-chamilo-files">Get Chamilo files</h3>
+<p>Let&rsquo;s now head to <a href="https://github.com/chamilo/chamilo-lms/releases">Chamilo&rsquo;s GitHub page</a> to confirm we have the latest version. Update the link and steps below as needed:</p>
+<pre><code>cd
+wget https://github.com/chamilo/chamilo-lms/releases/download/v1.11.14/chamilo-1.11.14.tar.gz
+</code></pre><p>Extract all the files to the <em>/opt</em> directory:</p>
+<pre><code>sudo tar -zxvf chamilo-1.11.14.tar.gz -C /opt
+</code></pre><p>Create a symbolic link between the unzip directory and the webserver root directory&quot;</p>
+<pre><code>sudo ln -s /opt/chamilo-1.11.8-php7 /var/www/html/chamilo
+</code></pre><p>Modify the ownership of all Chamilo files to the <code>www-data</code> user and the <code>www-data</code> group:</p>
+<pre><code>sudo chown -R www-data:www-data /opt/chamilo-1.11.8-php7
+</code></pre><h3 id="configure-apache-virtual-server-for-chamilo">Configure Apache virtual server for Chamilo</h3>
+<pre><code>cat &lt;&lt;EOF | sudo tee /etc/apache2/sites-available/chamilo.conf
+&lt;VirtualHost *:80&gt;
+ServerAdmin admin@example.com
+DocumentRoot /var/www/html/chamilo
+ServerName chamilo.example.com
+ServerAlias example.com
+&lt;Directory /&gt;
+AllowOverride All
+Require all granted
+&lt;/Directory&gt;
+&lt;Directory /var/www/html/chamilo&gt;
+Options FollowSymLinks
+AllowOverride All
+Require all granted
+&lt;/Directory&gt;
+ErrorLog /var/log/apache2/chamilo.example.com-error_log
+CustomLog /var/log/apache2/chamilo.example.com-access_log common
+&lt;/VirtualHost&gt;
+EOF
+</code></pre><p>Update the <strong>ServerAdmin</strong>, <strong>ServerName</strong>, <strong>ServerAlias</strong>, <strong>ErrorLog</strong> and <strong>CustomLog</strong> as necessary.</p>
+<p>Then, create the symbolic links to the <code>/etc/apache2/sites-enabled</code> directory, while deleting the Apache default link.</p>
+<pre><code>sudo rm /etc/apache2/sites-enabled/000-default.conf
+sudo ln -s /etc/apache2/sites-available/chamilo.conf /etc/apache2/sites-enabled/
+</code></pre><p>Finally, restart Apache so all the changes are activated.</p>
+<pre><code>sudo systemctl restart apache2.service
+</code></pre><h3 id="complete-the-install-in-the-browser">Complete the install in the browser</h3>
+<p>Open up your browser and navigate to your server, for example: <code>http://chamilo.iamamazing.com</code>, and click on <strong>Install Chamilo</strong>. From here on, fill out the details as requested, but here is a quick guide for you.</p>
+<ul>
+<li><code>Step 1 - Installation Language</code>: Choose the language of choice and then click the <code>Next</code> button.</li>
+<li><code>Step 2 – Requirements</code>: Make sure that all mandatory requirements have been met, and then click the <code>New installation</code> button.</li>
+<li><code>Step 3 – Licence</code>: Read the licence if you dare, and the click the checkbox next to the <code>I agree</code> sentence, fill in all required fields, and then click the <code>Next</code> button.</li>
+<li><code>Step 4 – MySQL database settings</code>: Input the database credentials we setup earlier and then click the <code>Check database connection</code> button to verify them. Click the <code>Next</code> button to move on.</li>
+<li><code>Step 5 – Config settings</code>: Modify the
+pre-set administrator password, fill in the other fields accordingly, and then click the <code>Next</code> button.</li>
+<li><code>Step 6 – Last check before install</code>: Review all of the settings and hit the <code>Install Chamilo</code> button to start the web installation.</li>
+<li><code>Step 7 – Installation process execution</code>: When Chamilo is successfully installed, click the <code>Go to your newly created portal.</code> button to finish the web installation wizard.</li>
+</ul>
+<h3 id="post-install-safety-measure-do-not-skip-this">Post-Install Safety Measure: DO NOT SKIP THIS!!!</h3>
+<p>In order to tighten security of the installation folders, we need to change their permissions:</p>
+<pre><code>sudo chmod -R 0555 /var/www/html/chamilo/app/config
+sudo rm -rf /var/www/html/chamilo/main/install
+</code></pre><h2 id="fail2ban">Fail2Ban</h2>
+<p>Sourced from: <a href="https://www.howtogeek.com/675010/how-to-secure-your-linux-computer-with-fail2ban/">How to Secure Your Linux Server with fail2ban</a><a href="https://www.howtogeek.com/675010/how-to-secure-your-linux-computer-with-fail2ban/">How to Secure Your Linux Server with fail2ban</a></p>
+<p>Firstly, install fail2ban.</p>
+<pre><code>sudo apt-get install fail2ban
+</code></pre><h3 id="configuring-fail2ban">Configuring fail2ban</h3>
+<p>fail2ban creates &lsquo;jails&rsquo; in .conf files. This standard config is removed each time fail2ban upgrades, so we&rsquo;ll make a customized file.</p>
+<p>So, lets make a copy of the default file and then edit our own version.</p>
+<pre><code>sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo nano /etc/fail2ban/jail.local
+</code></pre><p>Scroll down to the <strong>[DEFAULT]</strong> and <strong>[sshd]</strong> sections, that come up from about line 90 onwards. It appears near the top too, but ignore that. Find the following lines and update as below. See the source link above for further details of each.</p>
+<p>[DEFAULT] section:</p>
+<pre><code>ignoreip = 127.0.0.1/8 ::1
+
+bantime = 24h
+
+findtime = 5m
+
+maxretry = 3
+</code></pre><p>[sshd] section: <strong>ADD</strong> these 2 lines to the end of the [sshd] section.</p>
+<pre><code>maxretry = 3
+enable = true
+</code></pre><h3 id="enable-fail2ban">Enable fail2ban</h3>
+<p>Enable the service and auto-start.</p>
+<pre><code>sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+</code></pre><p>Check that fail2ban is working.</p>
+<pre><code>sudo systemctl status fail2ban.service
+</code></pre><p>Check fail2ban status. This should show the active jail.</p>
+<pre><code>sudo fail2ban-client status
+</code></pre><p>To show the exact status of the jail we activated. It will show any IPs that are banned.</p>
+<pre><code>sudo fail2ban-client status sshd
+</code></pre><p>Testing the jail: see source link above.</p>
+<h3 id="unbanning-an-ip">Unbanning an IP</h3>
+<p>After seeing the banned IP from above, use the command below, inserting the appropriate IP.</p>
+<pre><code>sudo fail2ban-client set sshd unbanip 192.168.4.25
+</code></pre><p>Now it can try again.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>That&rsquo;s it! All should be working now.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Seb Vettel deserves better</title>
