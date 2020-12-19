@@ -16,7 +16,7 @@
             
             <guid>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</guid>
             <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
@@ -24,7 +24,7 @@ sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;am
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>
-<p>Fresh Ubuntu Server install on a VPS with SUDO access.</p>
+<p>Fresh Ubuntu Server install on a VPS with sudo access.</p>
 </li>
 <li>
 <p>A domain pointed at the server.</p>
@@ -104,7 +104,9 @@ upload_max_filesize = 100M
 post_max_size = 100M
 </code></pre><h2 id="install-chamilo">Install Chamilo</h2>
 <h3 id="setup-the-database">Setup the Database</h3>
-<pre><code>CREATE DATABASE chamilo;
+<pre><code>sudo mysql -u root -p
+
+CREATE DATABASE chamilo;
 CREATE USER 'chamilo'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON chamilo.* TO 'chamilo'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
 FLUSH PRIVILEGES;

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="Darryl Gibbs ">
 <meta name="description" content="This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server." />
@@ -47,13 +47,13 @@ sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;am
 
 <meta itemprop="name" content="How to Install Chamilo on Ubuntu Server">
 <meta itemprop="description" content="This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt clean -y &amp;&amp; sudo reboot Then, install software we will use for the server.">
 <meta itemprop="datePublished" content="2020-12-18T12:00:37-03:00" />
 <meta itemprop="dateModified" content="2020-12-18T12:00:37-03:00" />
-<meta itemprop="wordCount" content="1967">
+<meta itemprop="wordCount" content="1972">
 <meta itemprop="image" content="https://dgibbs.me"/>
 
 
@@ -65,7 +65,7 @@ sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt auto
 
 <meta name="twitter:title" content="How to Install Chamilo on Ubuntu Server"/>
 <meta name="twitter:description" content="This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt clean -y &amp;&amp; sudo reboot Then, install software we will use for the server."/>
@@ -74,7 +74,7 @@ sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt auto
 
     <meta property="og:title" content="How to Install Chamilo on Ubuntu Server" />
 <meta property="og:description" content="This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt clean -y &amp;&amp; sudo reboot Then, install software we will use for the server." />
@@ -173,7 +173,7 @@ sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt auto
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>
-<p>Fresh Ubuntu Server install on a VPS with SUDO access.</p>
+<p>Fresh Ubuntu Server install on a VPS with sudo access.</p>
 </li>
 <li>
 <p>A domain pointed at the server.</p>
@@ -253,7 +253,9 @@ upload_max_filesize = 100M
 post_max_size = 100M
 </code></pre><h2 id="install-chamilo">Install Chamilo</h2>
 <h3 id="setup-the-database">Setup the Database</h3>
-<pre><code>CREATE DATABASE chamilo;
+<pre><code>sudo mysql -u root -p
+
+CREATE DATABASE chamilo;
 CREATE USER 'chamilo'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON chamilo.* TO 'chamilo'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
@@ -444,7 +446,7 @@ Apr 28 17:57:48 fine-turtle systemd[1]: Started Run certbot twice daily.
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        1967 Words
+        1972 Words
       </p>
 
       <p>

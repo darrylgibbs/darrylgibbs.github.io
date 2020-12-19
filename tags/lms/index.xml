@@ -15,7 +15,7 @@
       
       <guid>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</guid>
       <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
-Prerequisites   Fresh Ubuntu Server install on a VPS with SUDO access.
+Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
