@@ -270,7 +270,7 @@ wget https://github.com/chamilo/chamilo-lms/releases/download/v1.11.14/chamilo-1
 </code></pre><p>Create a symbolic link between the unzip directory and the webserver root directory&quot;</p>
 <pre><code>sudo ln -s /opt/chamilo-lms-1.11.14 /var/www/html/chamilo
 </code></pre><p>Modify the ownership of all Chamilo files to the <code>www-data</code> user and the <code>www-data</code> group:</p>
-<pre><code>sudo chown -R www-data:www-data /opt/chamilo-1.11.8-php7
+<pre><code>sudo chown -R www-data:www-data /opt/chamilo-lms-1.11.14
 </code></pre><h3 id="configure-apache-virtual-server-for-chamilo">Configure Apache virtual server for Chamilo</h3>
 <pre><code>cat &lt;&lt;EOF | sudo tee /etc/apache2/sites-available/chamilo.conf
 &lt;VirtualHost *:80&gt;
