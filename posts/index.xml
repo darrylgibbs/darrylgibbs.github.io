@@ -90,7 +90,7 @@ EXIT;
         gzip_min_length 1000;
 
 
-        server_name invoice.example.com_;
+        server_name invoice.example.com;
 
         location / {
                 # First attempt to serve request as file, then
