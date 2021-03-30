@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://dgibbs.me/tags/chamilo/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://dgibbs.me/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -20,26 +14,21 @@
                 hreflang="en"
                 href="https://dgibbs.me/"
                 />
-  </url>
-  
-  <url>
-    <loc>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dgibbs.me/tags/lms/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://dgibbs.me/posts/2021/03/how-to-install-invoiceninja-on-ubuntu-server/</loc>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
+  </url><url>
+    <loc>https://dgibbs.me/tags/invoiceninja/</loc>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
+  </url><url>
     <loc>https://dgibbs.me/posts/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
+  </url><url>
+    <loc>https://dgibbs.me/tags/self-hosted/</loc>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
+  </url><url>
     <loc>https://dgibbs.me/tags/</loc>
-    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -50,49 +39,43 @@
                 hreflang="en"
                 href="https://dgibbs.me/tags/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://dgibbs.me/tags/tutorial/</loc>
+    <lastmod>2021-03-29T13:56:37-03:00</lastmod>
+  </url><url>
+    <loc>https://dgibbs.me/tags/chamilo/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url><url>
+    <loc>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url><url>
+    <loc>https://dgibbs.me/tags/lms/</loc>
+    <lastmod>2020-12-18T12:00:37-03:00</lastmod>
+  </url><url>
     <loc>https://dgibbs.me/tags/formula-1/</loc>
     <lastmod>2020-08-22T06:46:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/posts/2020/08/seb-vettel-deserves-better/</loc>
     <lastmod>2020-08-22T06:46:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/tags/sebastian-vettel/</loc>
     <lastmod>2020-08-22T06:46:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/tags/hugo/</loc>
     <lastmod>2020-08-10T20:24:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/posts/2020/08/hugo-getting-started/</loc>
     <lastmod>2020-08-10T20:24:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/tags/mike-dane/</loc>
     <lastmod>2020-08-10T20:24:08-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/about/</loc>
     <lastmod>2020-08-09T20:23:50-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/tags/me/</loc>
     <lastmod>2020-08-09T20:23:50-03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/categories/</loc>
     <xhtml:link
                 rel="alternate"
@@ -104,9 +87,7 @@
                 hreflang="en"
                 href="https://dgibbs.me/categories/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://dgibbs.me/series/</loc>
     <xhtml:link
                 rel="alternate"
@@ -119,5 +100,4 @@
                 href="https://dgibbs.me/series/"
                 />
   </url>
-  
 </urlset>
