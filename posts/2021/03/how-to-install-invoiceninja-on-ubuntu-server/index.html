@@ -52,7 +52,7 @@ Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt clean &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo rebootThen, install software we will use for the server."><meta itemprop="datePublished" content="2021-03-29T13:56:37-03:00" />
 <meta itemprop="dateModified" content="2021-03-29T13:56:37-03:00" />
-<meta itemprop="wordCount" content="919"><meta itemprop="image" content="https://dgibbs.me"/>
+<meta itemprop="wordCount" content="918"><meta itemprop="image" content="https://dgibbs.me"/>
 <meta itemprop="keywords" content="invoiceninja,self-hosted,tutorial," />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://dgibbs.me"/>
@@ -188,7 +188,7 @@ net-tools \
 curl \
 software-properties-common
 </code></pre><p>And some specific software we will need for this setup?</p>
-<pre><code>sudo apt install gcc g++ make php php-{fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli} mariadb-server mariadb-client curl git nginx vim -y
+<pre><code>sudo apt install gcc g++ make php php-{fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli} mariadb-server mariadb-client curl git nginx -y
 </code></pre><p>Download and install PHP Composer</p>
 <pre><code>curl -sS https://getcomposer.org/installer -o composer-setup.php &amp;&amp; \
 sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
@@ -325,7 +325,7 @@ sudo chmod -R g+s /var/www/html/invoiceninja
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        919 Words
+        918 Words
       </p>
 
       <p>

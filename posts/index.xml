@@ -45,7 +45,7 @@ net-tools \
 curl \
 software-properties-common
 </code></pre><p>And some specific software we will need for this setup?</p>
-<pre><code>sudo apt install gcc g++ make php php-{fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli} mariadb-server mariadb-client curl git nginx vim -y
+<pre><code>sudo apt install gcc g++ make php php-{fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli} mariadb-server mariadb-client curl git nginx -y
 </code></pre><p>Download and install PHP Composer</p>
 <pre><code>curl -sS https://getcomposer.org/installer -o composer-setup.php &amp;&amp; \
 sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
