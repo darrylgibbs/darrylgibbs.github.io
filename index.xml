@@ -14,7 +14,7 @@
       <pubDate>Mon, 29 Mar 2021 13:56:37 -0300</pubDate>
       
       <guid>https://dgibbs.me/posts/2021/03/how-to-install-invoiceninja-on-ubuntu-server/</guid>
-      <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [TechnicallyComputers](Install Invoice Ninja v5 on Ubuntu 20.04 - v5 Self-hosted - Discourse](https://forum.invoiceninja.com/t/install-invoice-ninja-v5-on-ubuntu-20-04/4588). Kudos to him!
+      <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [TechnicallyComputers](Install Invoice Ninja v5 on Ubuntu 20.04 - v5 Self-hosted - Discourse). Kudos to him!
 Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Optional: A domain pointed at the server.
   Install necessary (and extra) software First, update the system.</description>
