@@ -10,7 +10,7 @@ Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Optional: A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt clean &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo rebootThen, install software we will use for the server." />
-<meta name="keywords" content=", invoiceninja, self-hosted, tutorial" />
+<meta name="keywords" content=", invoice ninja, self-hosted, tutorial" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
 <link rel="canonical" href="https://dgibbs.me/posts/2021/03/how-to-install-invoiceninja-on-ubuntu-server/" />
@@ -52,8 +52,8 @@ Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt clean &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo rebootThen, install software we will use for the server."><meta itemprop="datePublished" content="2021-03-29T13:56:37-03:00" />
 <meta itemprop="dateModified" content="2021-03-29T13:56:37-03:00" />
-<meta itemprop="wordCount" content="918"><meta itemprop="image" content="https://dgibbs.me"/>
-<meta itemprop="keywords" content="invoiceninja,self-hosted,tutorial," />
+<meta itemprop="wordCount" content="914"><meta itemprop="image" content="https://dgibbs.me"/>
+<meta itemprop="keywords" content="invoice ninja,self-hosted,tutorial," />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://dgibbs.me"/>
 
@@ -273,7 +273,7 @@ sudo systemctl enable nginx
 </code></pre><p>Test the nginx config to make sure all is well:</p>
 <pre><code>sudo nginx -t
 </code></pre><h2 id="get-invoice-ninja-files">Get Invoice Ninja files</h2>
-<p>Visit the [invoiceninja github release page](<a href="https://github.com/invoiceninja/invoiceninja/releases">Releases · invoiceninja/invoiceninja · GitHub</a>) and get the latest <strong>-release</strong> version zip file.</p>
+<p>Visit the <a href="https://github.com/invoiceninja/invoiceninja/releases">invoiceninja github release page</a> and get the latest <strong>-release</strong> version zip file.</p>
 <pre><code>cd /var/www/html
 sudo mkdir invoiceninja &amp;&amp; cd invoiceninja
 sudo wget https://github.com/invoiceninja/invoiceninja/releases/download/v5.1.32-release/invoiceninja.zip
@@ -314,7 +314,7 @@ sudo chmod -R g+s /var/www/html/invoiceninja
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
             <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
             <line x1="7" y1="7" x2="7" y2="7"></line>
-          </svg><span class="tag"><a href="https://dgibbs.me/tags/invoiceninja/">invoiceninja</a></span><span class="tag"><a href="https://dgibbs.me/tags/self-hosted/">self-hosted</a></span><span class="tag"><a href="https://dgibbs.me/tags/tutorial/">tutorial</a></span>
+          </svg><span class="tag"><a href="https://dgibbs.me/tags/invoice-ninja/">invoice ninja</a></span><span class="tag"><a href="https://dgibbs.me/tags/self-hosted/">self-hosted</a></span><span class="tag"><a href="https://dgibbs.me/tags/tutorial/">tutorial</a></span>
         </p>
 
       <p>
@@ -325,7 +325,7 @@ sudo chmod -R g+s /var/www/html/invoiceninja
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        918 Words
+        914 Words
       </p>
 
       <p>
@@ -440,6 +440,13 @@ sudo chmod -R g+s /var/www/html/invoiceninja
         </div>
 
         <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/">
+                <span class="button__icon">←</span>
+                <span class="button__text">How to Install Invoice Ninja V5 in Docker Compose</span>
+              </a>
+            </span>
           
 
           

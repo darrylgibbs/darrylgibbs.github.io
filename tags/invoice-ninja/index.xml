@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>self-hosted on darryl gibbs</title>
-    <link>https://dgibbs.me/tags/self-hosted/</link>
-    <description>Recent content in self-hosted on darryl gibbs</description>
+    <title>invoice ninja on darryl gibbs</title>
+    <link>https://dgibbs.me/tags/invoice-ninja/</link>
+    <description>Recent content in invoice ninja on darryl gibbs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 07 Apr 2021 10:11:05 -0300</lastBuildDate><atom:link href="https://dgibbs.me/tags/self-hosted/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Apr 2021 10:11:05 -0300</lastBuildDate><atom:link href="https://dgibbs.me/tags/invoice-ninja/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to Install Invoice Ninja V5 in Docker Compose</title>
       <link>https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/</link>

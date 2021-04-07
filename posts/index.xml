@@ -6,8 +6,168 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Mon, 29 Mar 2021 13:56:37 -0300</lastBuildDate>
+        <lastBuildDate>Wed, 07 Apr 2021 10:11:05 -0300</lastBuildDate>
         <atom:link href="https://dgibbs.me/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>How to Install Invoice Ninja V5 in Docker Compose</title>
+            <link>https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/</link>
+            <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
+            
+            <guid>https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/</guid>
+            <description>Maybe you are like me and have a small business that requires an invoicing solution. You could pay the $10-15 to have a provider host the service for you (such as FreshBooks) or you could do it yourself with great Open Source software! Thankfully Invoice Ninja has a great app that they can host for you (for a fee) or, if you&amp;rsquo;re adventurous (or cheap&amp;hellip; depending on your perspective) you could host it for yourself!</description>
+            <content type="html"><![CDATA[<p>Maybe you are like me and have a small business that requires an invoicing solution.  You could pay the $10-15 to have a provider host the service for you (such as <a href="https://www.freshbooks.com/">FreshBooks</a>) or you could do it yourself with great Open Source software!  Thankfully <a href="https://www.invoiceninja.com/">Invoice Ninja</a> has a great app that they can host for you (for a fee) or, if you&rsquo;re adventurous (or cheap&hellip; depending on your perspective) you could host it for yourself!</p>
+<p><strong>Cavaet:</strong> Self-hosting Open Source software generally gives you access to &lsquo;Premium&rsquo; tier features.  Invoice Ninja is no different.  However, if you should want their watermark removed from your invoices, you will need to pay them <a href="https://www.invoiceninja.com/faqs/does-the-self-host-version-include-all-proenterprise-advanced-features/">$30 a year for that priviledge</a>.  But honestly, that&rsquo;s not unfair.</p>
+<p><strong>Dev&rsquo;s need to eat too!</strong></p>
+<p>I have adapted this tutorial from the official tutorial on the <a href="https://github.com/invoiceninja/dockerfiles">Invoice Ninja Dockerfile Github page</a>.  Personal, I get confused by these tutorials that just assume you&rsquo;re a rocket scientist, and so I failed at this about 25 times before I got it right.  Although that was partially cause I wasn&rsquo;t reading this correctly.</p>
+<p>Finally, Invoice Ninja can be hosted on any x86 (Desktop PC or Server) or ARM (SBC such as a Raspberry Pi) device.</p>
+<p>This tutorial will focus on the x86 platform, and using Ubuntu Server. Obviously you could use other distros, but you will need to adjust package managers etc as necessary to work with your chosen distro.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>I&rsquo;m going to assume that you already have the following:</p>
+<ul>
+<li>
+<p>A Linux based server up and running and fully updated.</p>
+</li>
+<li>
+<p>Both <a href="https://docs.docker.com/engine/install/ubuntu/">Docker</a> and <a href="https://docs.docker.com/compose/install/">Docker Compose</a> installed, and the current user has been added to the <code>docker</code> group (meaning: we don&rsquo;t need to use <code>sudo</code> before issuing docker commands).</p>
+</li>
+<li>
+<p>Optional: A domain pointed at the server.</p>
+</li>
+</ul>
+<p>Also know that I will not be setting up SSL as I will be using a reverse-proxy on my server.  I suggest you do the same if this is on a public facing server.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Install the apps we will need to download and extract the Invoice Ninja files.</p>
+<pre><code>sudo apt install wget \
+unzip \
+git -y
+</code></pre><h2 id="installation">Installation</h2>
+<p>At this point, where you place your Docker Compose files is really up to you.  I place mine in my home folder.  Each app/service gets it&rsquo;s own folder. So let&rsquo;s create that.</p>
+<pre><code>mkdir invoiceninja
+cd invoiceninja
+</code></pre><p>And now let&rsquo;s clone the git repo that holds all the files necessary (including the docker-compose.yml file) we need to get this puppy working.</p>
+<pre><code>git clone https://github.com/invoiceninja/dockerfiles.git
+cd dockerfiles
+</code></pre><p>Now, we need to generate an <code>APP_KEY</code> that will later be used in an <code>env</code> file.  The output of this command will create a key that looks like <code>base64...</code> , and you will need to make note of the <strong>entire output</strong>.</p>
+<p>If the command looks like it&rsquo;s hanging, it&rsquo;s because this will actually download the Invoice Ninja container in order to generate the key. The good news is later when we spin it up, we&rsquo;ll already have it!</p>
+<pre><code>docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
+</code></pre><p><!-- raw HTML omitted --><strong>Critical step incoming!!!</strong><!-- raw HTML omitted --></p>
+<p>Now we need to apply <strong>folder permissions</strong> to this container.  Failure to do so will cause an error in the <code>app</code> container saying that &lsquo;app permissions are wrong&rsquo;, thus breaking the whole app.</p>
+<pre><code>chmod 755 docker/app/public
+sudo chown -R 1500:1500 docker/app
+</code></pre><h2 id="editing-configs---env">Editing configs - ENV</h2>
+<p>Let&rsquo;s start with the <code>env</code> file.  At this point we should be in the <code>dockerfiles</code> folder.</p>
+<pre><code>nano env
+</code></pre><p>At this point, the below <code>env</code> is the stock version from the Invoice Ninja <code>git</code>.  Note, that I have removed everything below the <code>#4 env vars</code> as this is no longer relevant.</p>
+<pre><code>APP_URL=http://in.localhost:8003/
+APP_KEY=&lt;insert your generated key in here&gt;
+APP_DEBUG=true
+MULTI_DB_ENABLED=false
+DB_HOST1=db
+DB_PORT1=3306
+DB_USERNAME1=ninja
+DB_PASSWORD1=ninja
+DB_DATABASE1=ninja
+MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
+MYSQL_USER=ninja
+MYSQL_PASSWORD=ninja
+MYSQL_DATABASE=ninja
+
+#this is a system variable please do not remove
+IS_DOCKER=true
+
+PHANTOMJS_PDF_GENERATION=false
+</code></pre><p>It goes without saying that you should <strong>ABSOLUTELY</strong> change the password variables, namely:</p>
+<ul>
+<li>
+<p><code>DB_PASSWORD1</code></p>
+</li>
+<li>
+<p><code>MYSQL_ROOT_PASSWORD</code></p>
+</li>
+<li>
+<p><code>MYSQL_PASSWORD</code></p>
+</li>
+</ul>
+<p>If you plan on generating PDFs of invoices, change the below variable from <code>false</code> to <code>true</code>. Although, personally I still can&rsquo;t get the PDFs to work properly.</p>
+<pre><code>PHANTOMJS_PDF_GENERATION=false
+</code></pre><p>Next, the <code>APP_URL</code> variable needs to be updated to whatever your domain is.</p>
+<pre><code>APP_URL=http://invoice.example.com
+...
+</code></pre><p>Finally, we need to update the <code>APP_KEY</code> variable with the key we generated earlier.</p>
+<pre><code>APP_KEY=base64...
+</code></pre><p>So, we should now have something like this.</p>
+<pre><code>APP_URL=http://invoice.example.com
+APP_KEY=base64abcdefghijklmn..
+APP_DEBUG=true
+MULTI_DB_ENABLED=false
+DB_HOST1=db
+DB_PORT1=3306
+DB_USERNAME1=ninja
+DB_PASSWORD1=ninjaPASSWORDthatNOoneCOULDguess
+DB_DATABASE1=ninja
+MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
+MYSQL_USER=ninja
+MYSQL_PASSWORD=ninjaPASSWORDthatNOoneCOULDguess
+MYSQL_DATABASE=ninja
+
+#this is a system variable please do not remove
+IS_DOCKER=true
+
+PHANTOMJS_PDF
+</code></pre><p>Now, save all the changes and exit.</p>
+<h2 id="editing-configs---docker-composeyml">Editing configs - docker-compose.yml</h2>
+<p>The changes here are more subjective and &lsquo;to your use case&rsquo;, rather than necessary, but I&rsquo;ll point out a few that I think are worth your time.</p>
+<h3 id="extra_hosts">extra_hosts:</h3>
+<p>Each service has one of these variables present, and it could possibly be left alone, but I comment mine out just to reduce possible issues.  As read on the Gitgub page, these variables assist those that are chosing to run Invoice Ninja on their local machine.  Since we&rsquo;re not doing that, it can go.</p>
+<p>Remember to do this for <strong>each</strong> of the 3 services present in this <code>docker-compose.yml</code> file.</p>
+<pre><code># extra_hosts:
+#      - &quot;in5.localhost:192.168.0.124 &quot; #host and ip
+</code></pre><h3 id="container_name">container_name:</h3>
+<p>This variable currently doesn&rsquo;t exist for each service, but I think its best to add these as custom values so when looking at your list of docker services, they are easier to identify.  So add the below to each service.</p>
+<pre><code>services:
+    server:
+        ...
+        container_name: invoice_ninja_server
+        ...
+
+
+    app:
+        ...
+        container_name: invoice_ninja_app
+        ...
+
+
+    db:
+        ...
+        container_name: invoice_ninja_db
+        ...
+</code></pre><h3 id="ports">ports:</h3>
+<p>Currently the <code>docker-compose.yml</code> has port 80 exposed for the <code>server</code>.  If this is fine for your purposes, then ignore this step.  If you need to use a different port, then change according.  For example:</p>
+<pre><code>services:
+    server:
+        ...
+        ports: 
+            - &quot;8080:80&quot;
+        ...
+</code></pre><p>Next, for the <code>db</code> the default port exposed is <code>3305</code>.  This is not the standard port used for databases.  So if you choose to leave this as is, when you do the setup process in your browser you will need to update the <strong>database port</strong> from the default <code>3306</code> to <code>3305</code>.</p>
+<p>Alternatively, if you&rsquo;re like me, change it to <code>3306</code>.  Obviously, if this port is used for something else, update it accordingly.</p>
+<pre><code>services:
+    db:
+        ...
+        ports: 
+            - &quot;5000:3306&quot;
+        ...
+</code></pre><p>Now, save all the changes and exit.</p>
+<h2 id="fire-it-up">Fire it up!!!</h2>
+<p>Since these files are in the same folder, ensure that you are still in the <code>../invoiceninja/dockerfiles</code> folder, and start the container.</p>
+<pre><code>docker-compose up -d
+</code></pre><p>Wait about 30s to a 1 minute before opening the URL in the browser as it takes a while for everything to get ready.  But once that&rsquo;s done, open your browser of choice and type in the URL that you specified in the <code>env</code> file earlier.</p>
+<pre><code>http://invoice.example.com
+</code></pre><p>Now just fill in all the relevant info (remember to pay attention to the <code>db port</code>)  and also update the <code>db host</code> value to <code>db</code>.  Essentially, this should be the same as whatever the database server is named in the <code>docker-compose.yml</code> file.  In our case, as it should be for everyone unless you changed it, is <code>db</code>.</p>
+<p>That should be it!</p>
+]]></content>
+        </item>
         
         <item>
             <title>How to install InvoiceNinja on Ubuntu Server</title>
@@ -130,7 +290,7 @@ sudo systemctl enable nginx
 </code></pre><p>Test the nginx config to make sure all is well:</p>
 <pre><code>sudo nginx -t
 </code></pre><h2 id="get-invoice-ninja-files">Get Invoice Ninja files</h2>
-<p>Visit the [invoiceninja github release page](<a href="https://github.com/invoiceninja/invoiceninja/releases">Releases · invoiceninja/invoiceninja · GitHub</a>) and get the latest <strong>-release</strong> version zip file.</p>
+<p>Visit the <a href="https://github.com/invoiceninja/invoiceninja/releases">invoiceninja github release page</a> and get the latest <strong>-release</strong> version zip file.</p>
 <pre><code>cd /var/www/html
 sudo mkdir invoiceninja &amp;&amp; cd invoiceninja
 sudo wget https://github.com/invoiceninja/invoiceninja/releases/download/v5.1.32-release/invoiceninja.zip

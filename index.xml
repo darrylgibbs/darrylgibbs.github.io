@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 29 Mar 2021 13:56:37 -0300</lastBuildDate><atom:link href="https://dgibbs.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Apr 2021 10:11:05 -0300</lastBuildDate><atom:link href="https://dgibbs.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Install Invoice Ninja V5 in Docker Compose</title>
+      <link>https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/</link>
+      <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
+      
+      <guid>https://dgibbs.me/posts/2021/04/how-to-install-invoice-ninja-v5-in-docker-compose/</guid>
+      <description>Maybe you are like me and have a small business that requires an invoicing solution. You could pay the $10-15 to have a provider host the service for you (such as FreshBooks) or you could do it yourself with great Open Source software! Thankfully Invoice Ninja has a great app that they can host for you (for a fee) or, if you&amp;rsquo;re adventurous (or cheap&amp;hellip; depending on your perspective) you could host it for yourself!</description>
+    </item>
+    
     <item>
       <title>How to install InvoiceNinja on Ubuntu Server</title>
       <link>https://dgibbs.me/posts/2021/03/how-to-install-invoiceninja-on-ubuntu-server/</link>

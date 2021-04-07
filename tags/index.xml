@@ -7,20 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 29 Mar 2021 13:56:37 -0300</lastBuildDate><atom:link href="https://dgibbs.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Apr 2021 10:11:05 -0300</lastBuildDate><atom:link href="https://dgibbs.me/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>invoiceninja</title>
-      <link>https://dgibbs.me/tags/invoiceninja/</link>
-      <pubDate>Mon, 29 Mar 2021 13:56:37 -0300</pubDate>
+      <title>docker</title>
+      <link>https://dgibbs.me/tags/docker/</link>
+      <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
       
-      <guid>https://dgibbs.me/tags/invoiceninja/</guid>
+      <guid>https://dgibbs.me/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>invoice ninja</title>
+      <link>https://dgibbs.me/tags/invoice-ninja/</link>
+      <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
+      
+      <guid>https://dgibbs.me/tags/invoice-ninja/</guid>
       <description></description>
     </item>
     
     <item>
       <title>self-hosted</title>
       <link>https://dgibbs.me/tags/self-hosted/</link>
-      <pubDate>Mon, 29 Mar 2021 13:56:37 -0300</pubDate>
+      <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
       
       <guid>https://dgibbs.me/tags/self-hosted/</guid>
       <description></description>
@@ -29,7 +38,7 @@
     <item>
       <title>tutorial</title>
       <link>https://dgibbs.me/tags/tutorial/</link>
-      <pubDate>Mon, 29 Mar 2021 13:56:37 -0300</pubDate>
+      <pubDate>Wed, 07 Apr 2021 10:11:05 -0300</pubDate>
       
       <guid>https://dgibbs.me/tags/tutorial/</guid>
       <description></description>
@@ -86,15 +95,6 @@
       <pubDate>Mon, 10 Aug 2020 20:24:08 -0300</pubDate>
       
       <guid>https://dgibbs.me/tags/mike-dane/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>me</title>
-      <link>https://dgibbs.me/tags/me/</link>
-      <pubDate>Sun, 09 Aug 2020 20:23:50 -0300</pubDate>
-      
-      <guid>https://dgibbs.me/tags/me/</guid>
       <description></description>
     </item>
     
