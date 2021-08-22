@@ -27,7 +27,7 @@
 Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Optional: A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
-sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt clean &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo rebootThen, install software we will use for the server.</description>
+sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt clean &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
     </item>
     
   </channel>

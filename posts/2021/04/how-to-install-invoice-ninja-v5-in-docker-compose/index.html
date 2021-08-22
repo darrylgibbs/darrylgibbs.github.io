@@ -170,46 +170,46 @@
 <p>Also know that I will not be setting up SSL as I will be using a reverse-proxy on my server.  I suggest you do the same if this is on a public facing server.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>Install the apps we will need to download and extract the Invoice Ninja files.</p>
-<pre><code>sudo apt install wget \
+<pre><code class="language-she" data-lang="she">sudo apt install wget \
 unzip \
 git -y
 </code></pre><h2 id="installation">Installation</h2>
 <p>At this point, where you place your Docker Compose files is really up to you.  I place mine in my home folder.  Each app/service gets it&rsquo;s own folder. So let&rsquo;s create that.</p>
-<pre><code>mkdir invoiceninja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir invoiceninja
 cd invoiceninja
-</code></pre><p>And now let&rsquo;s clone the git repo that holds all the files necessary (including the <code>docker-compose.yml</code> file) we need to get this puppy working.</p>
-<pre><code>git clone https://github.com/invoiceninja/dockerfiles.git
+</code></pre></div><p>And now let&rsquo;s clone the git repo that holds all the files necessary (including the <code>docker-compose.yml</code> file) we need to get this puppy working.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://github.com/invoiceninja/dockerfiles.git
 cd dockerfiles
-</code></pre><p>Now, we need to generate an <code>APP_KEY</code> that will later be used in an <code>env</code> file.  The output of this command will create a key that starts with <code>base64...</code>, and you will need to make note of the <strong>entire output</strong>.</p>
+</code></pre></div><p>Now, we need to generate an <code>APP_KEY</code> that will later be used in an <code>env</code> file.  The output of this command will create a key that starts with <code>base64...</code>, and you will need to make note of the <strong>entire output</strong>.</p>
 <p>If the command looks like it&rsquo;s hanging, it&rsquo;s because this will actually download the Invoice Ninja container in order to generate the key. The good news is that later when we spin it up, we&rsquo;ll already have the container downloaded!</p>
-<pre><code>docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
-</code></pre><p><!-- raw HTML omitted --><strong>Critical step incoming!!!</strong><!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
+</code></pre></div><p><!-- raw HTML omitted --><strong>Critical step incoming!!!</strong><!-- raw HTML omitted --></p>
 <p>Now we need to apply <strong>folder permissions</strong> to this container.  Failure to do so will cause an error in the <code>app</code> container saying that &lsquo;app permissions are wrong&rsquo;, thus breaking the whole app.</p>
-<pre><code>chmod 755 docker/app/public
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chmod <span style="color:#ae81ff">755</span> docker/app/public
 sudo chown -R 1500:1500 docker/app
-</code></pre><h2 id="editing-configs---env">Editing configs - ENV</h2>
+</code></pre></div><h2 id="editing-configs---env">Editing configs - ENV</h2>
 <p>Let&rsquo;s start with the <code>env</code> file.  At this point we should be in the <code>dockerfiles</code> folder.</p>
-<pre><code>nano env
-</code></pre><p>At this point, the below <code>env</code> is the stock version from the Invoice Ninja <code>git</code>.  Note, that I have removed everything below the <code>#4 env vars</code> as this is no longer relevant.</p>
-<pre><code>APP_URL=http://in.localhost:8003/
-APP_KEY=&lt;insert your generated key in here&gt;
-APP_DEBUG=true
-MULTI_DB_ENABLED=false
-DB_HOST1=db
-DB_PORT1=3306
-DB_USERNAME1=ninja
-DB_PASSWORD1=ninja
-DB_DATABASE1=ninja
-MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
-MYSQL_USER=ninja
-MYSQL_PASSWORD=ninja
-MYSQL_DATABASE=ninja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nano env
+</code></pre></div><p>At this point, the below <code>env</code> is the stock version from the Invoice Ninja <code>git</code>.  Note, that I have removed everything below the <code>#4 env vars</code> as this is no longer relevant.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://in.localhost:8003/
+APP_KEY<span style="color:#f92672">=</span>&lt;insert your generated key in here&gt;
+APP_DEBUG<span style="color:#f92672">=</span>true
+MULTI_DB_ENABLED<span style="color:#f92672">=</span>false
+DB_HOST1<span style="color:#f92672">=</span>db
+DB_PORT1<span style="color:#f92672">=</span><span style="color:#ae81ff">3306</span>
+DB_USERNAME1<span style="color:#f92672">=</span>ninja
+DB_PASSWORD1<span style="color:#f92672">=</span>ninja
+DB_DATABASE1<span style="color:#f92672">=</span>ninja
+MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span>ninjaAdm1nPassword
+MYSQL_USER<span style="color:#f92672">=</span>ninja
+MYSQL_PASSWORD<span style="color:#f92672">=</span>ninja
+MYSQL_DATABASE<span style="color:#f92672">=</span>ninja
 
-#this is a system variable please do not remove
-IS_DOCKER=true
+<span style="color:#75715e">#this is a system variable please do not remove</span>
+IS_DOCKER<span style="color:#f92672">=</span>true
 
-PHANTOMJS_PDF_GENERATION=false
-</code></pre><p>It goes without saying that you should <strong>ABSOLUTELY</strong> change the password variables, namely:</p>
+PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>false
+</code></pre></div><p>It goes without saying that you should <strong>ABSOLUTELY</strong> change the password variables, namely:</p>
 <ul>
 <li>
 <p><code>DB_PASSWORD1</code></p>
@@ -222,37 +222,37 @@ PHANTOMJS_PDF_GENERATION=false
 </li>
 </ul>
 <p>If you plan on generating PDFs of invoices, change the below variable from <code>false</code> to <code>true</code>. Although, personally I still can&rsquo;t get the PDFs to work properly.</p>
-<pre><code>PHANTOMJS_PDF_GENERATION=false
-</code></pre><p>Next, the <code>APP_URL</code> variable needs to be updated to whatever your domain is.</p>
-<pre><code>APP_URL=http://invoice.example.com
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>false
+</code></pre></div><p>Next, the <code>APP_URL</code> variable needs to be updated to whatever your domain is.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://invoice.example.com
 ...
-</code></pre><p>Next, we need to update the <code>APP_KEY</code> variable with the key we generated earlier.</p>
-<pre><code>APP_KEY=base64...
-</code></pre><p>So, we should now have something like this.</p>
-<pre><code>APP_URL=http://invoice.example.com
-APP_KEY=base64abcdefghijklmn..
-APP_DEBUG=true
-MULTI_DB_ENABLED=false
-DB_HOST1=db
-DB_PORT1=3306
-DB_USERNAME1=ninja
-DB_PASSWORD1=ninjaPASSWORDthatNOoneCOULDguess
-DB_DATABASE1=ninja
-MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
-MYSQL_USER=ninja
-MYSQL_PASSWORD=ninjaPASSWORDthatNOoneCOULDguess
-MYSQL_DATABASE=ninja
+</code></pre></div><p>Next, we need to update the <code>APP_KEY</code> variable with the key we generated earlier.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_KEY<span style="color:#f92672">=</span>base64...
+</code></pre></div><p>So, we should now have something like this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://invoice.example.com
+APP_KEY<span style="color:#f92672">=</span>base64abcdefghijklmn..
+APP_DEBUG<span style="color:#f92672">=</span>true
+MULTI_DB_ENABLED<span style="color:#f92672">=</span>false
+DB_HOST1<span style="color:#f92672">=</span>db
+DB_PORT1<span style="color:#f92672">=</span><span style="color:#ae81ff">3306</span>
+DB_USERNAME1<span style="color:#f92672">=</span>ninja
+DB_PASSWORD1<span style="color:#f92672">=</span>ninjaPASSWORDthatNOoneCOULDguess
+DB_DATABASE1<span style="color:#f92672">=</span>ninja
+MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span>ninjaAdm1nPassword
+MYSQL_USER<span style="color:#f92672">=</span>ninja
+MYSQL_PASSWORD<span style="color:#f92672">=</span>ninjaPASSWORDthatNOoneCOULDguess
+MYSQL_DATABASE<span style="color:#f92672">=</span>ninja
 
-#this is a system variable please do not remove
-IS_DOCKER=true
+<span style="color:#75715e">#this is a system variable please do not remove</span>
+IS_DOCKER<span style="color:#f92672">=</span>true
 
-PHANTOMJS_PDF_GENERATION=true
-</code></pre><p>Now, save all the changes and exit.</p>
+PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>true
+</code></pre></div><p>Now, save all the changes and exit.</p>
 <h2 id="editing-configs---docker-composeyml">Editing configs - docker-compose.yml</h2>
 <p>The changes here are more subjective and &lsquo;to your use case&rsquo;, rather than necessary, but I&rsquo;ll point out a few that I think are worth your time.</p>
 <h3 id="container_name">container_name:</h3>
 <p>This variable currently doesn&rsquo;t exist for each service, but I think its best to add these as custom values so when looking at your list of docker services, they are easier to identify.  So add the below to each service.</p>
-<pre><code>services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">services:
     server:
         ...
         container_name: invninja_server
@@ -269,22 +269,22 @@ PHANTOMJS_PDF_GENERATION=true
         ...
         container_name: invninja_db
         ...
-</code></pre><h3 id="ports">ports:</h3>
+</code></pre></div><h3 id="ports">ports:</h3>
 <p>Currently the <code>docker-compose.yml</code> has port 80 exposed for the <code>server</code>.  If this is fine for your purposes, then ignore this step.  If you need to use a different port, then change according.  For example:</p>
-<pre><code>services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">services:
     server:
         ...
         ports: 
-            - &quot;10000:80&quot;
+            - <span style="color:#e6db74">&#34;10000:80&#34;</span>
         ...
-</code></pre><p>Now, save all the changes and exit.</p>
+</code></pre></div><p>Now, save all the changes and exit.</p>
 <h2 id="fire-it-up">Fire it up!!!</h2>
 <p>Since these files are in the same folder, ensure that you are still in the <code>../invoiceninja/dockerfiles</code> folder, and start the container.</p>
-<pre><code>docker-compose up -d
-</code></pre><h4 id="cool-your-jets">Cool your jets!!</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose up -d
+</code></pre></div><h4 id="cool-your-jets">Cool your jets!!</h4>
 <p><strong>IF</strong> you receive a <code>SQLSTATE[42S02] exception</code> complaint in your browser and a metric crap ton of tables, head back to the command line and run the following command.</p>
-<pre><code>docker-compose exec app php artisan migrate
-</code></pre><p>I had this issue <strong>everytime</strong> I ran an install.  This really should be in the documentation, but this lovely user <a href="https://github.com/invoiceninja/dockerfiles/issues/235">mentioned</a> it for us.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose exec app php artisan migrate
+</code></pre></div><p>I had this issue <strong>everytime</strong> I ran an install.  This really should be in the documentation, but this lovely user <a href="https://github.com/invoiceninja/dockerfiles/issues/235">mentioned</a> it for us.</p>
 <h4 id="continuing-setup">Continuing setup!</h4>
 <p>Wait about 30s to a 1 minute before opening the URL in the browser as it takes a while for everything to get ready.  But once that&rsquo;s done, open your browser of choice and type in the URL that you specified in the <code>env</code> file earlier.</p>
 <pre><code>http://invoice.example.com
@@ -299,8 +299,8 @@ PHANTOMJS_PDF_GENERATION=true
 <h3 id="is-your-interface-is-having-a-whinge">Is your interface is having a whinge??</h3>
 <h4 id="app_debug">APP_DEBUG</h4>
 <p>Once into my interface, and entering the company name currency of choice, I was met with a <code>debug</code> issue.  Essentially, we now need to go back to the command line, open the <code>env</code> file and set the <code>APP_DEBUG</code> value to <code>false</code>, as seen below.</p>
-<pre><code>APP_DEBUG=false
-</code></pre><p>I orginally tried doing this before firing up the container, but the whole thing refused to work. This is probably why it was set to <code>true</code> in the first place.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_DEBUG<span style="color:#f92672">=</span>false
+</code></pre></div><p>I orginally tried doing this before firing up the container, but the whole thing refused to work. This is probably why it was set to <code>true</code> in the first place.</p>
 <p>Now restart the container.</p>
 <h4 id="cronjob-exclamations">Cronjob exclamations</h4>
 <p>You will notice shortly after intial setup an exclamation in the bottom left corner of the screen.  Ironically, after having done the above, and waiting a couple of minutes, just refresh the browser and that will go away.</p>

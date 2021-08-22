@@ -39,46 +39,46 @@
 <p>Also know that I will not be setting up SSL as I will be using a reverse-proxy on my server.  I suggest you do the same if this is on a public facing server.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>Install the apps we will need to download and extract the Invoice Ninja files.</p>
-<pre><code>sudo apt install wget \
+<pre><code class="language-she" data-lang="she">sudo apt install wget \
 unzip \
 git -y
 </code></pre><h2 id="installation">Installation</h2>
 <p>At this point, where you place your Docker Compose files is really up to you.  I place mine in my home folder.  Each app/service gets it&rsquo;s own folder. So let&rsquo;s create that.</p>
-<pre><code>mkdir invoiceninja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir invoiceninja
 cd invoiceninja
-</code></pre><p>And now let&rsquo;s clone the git repo that holds all the files necessary (including the <code>docker-compose.yml</code> file) we need to get this puppy working.</p>
-<pre><code>git clone https://github.com/invoiceninja/dockerfiles.git
+</code></pre></div><p>And now let&rsquo;s clone the git repo that holds all the files necessary (including the <code>docker-compose.yml</code> file) we need to get this puppy working.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://github.com/invoiceninja/dockerfiles.git
 cd dockerfiles
-</code></pre><p>Now, we need to generate an <code>APP_KEY</code> that will later be used in an <code>env</code> file.  The output of this command will create a key that starts with <code>base64...</code>, and you will need to make note of the <strong>entire output</strong>.</p>
+</code></pre></div><p>Now, we need to generate an <code>APP_KEY</code> that will later be used in an <code>env</code> file.  The output of this command will create a key that starts with <code>base64...</code>, and you will need to make note of the <strong>entire output</strong>.</p>
 <p>If the command looks like it&rsquo;s hanging, it&rsquo;s because this will actually download the Invoice Ninja container in order to generate the key. The good news is that later when we spin it up, we&rsquo;ll already have the container downloaded!</p>
-<pre><code>docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
-</code></pre><p><!-- raw HTML omitted --><strong>Critical step incoming!!!</strong><!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run --rm -it invoiceninja/invoiceninja php artisan key:generate --show
+</code></pre></div><p><!-- raw HTML omitted --><strong>Critical step incoming!!!</strong><!-- raw HTML omitted --></p>
 <p>Now we need to apply <strong>folder permissions</strong> to this container.  Failure to do so will cause an error in the <code>app</code> container saying that &lsquo;app permissions are wrong&rsquo;, thus breaking the whole app.</p>
-<pre><code>chmod 755 docker/app/public
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chmod <span style="color:#ae81ff">755</span> docker/app/public
 sudo chown -R 1500:1500 docker/app
-</code></pre><h2 id="editing-configs---env">Editing configs - ENV</h2>
+</code></pre></div><h2 id="editing-configs---env">Editing configs - ENV</h2>
 <p>Let&rsquo;s start with the <code>env</code> file.  At this point we should be in the <code>dockerfiles</code> folder.</p>
-<pre><code>nano env
-</code></pre><p>At this point, the below <code>env</code> is the stock version from the Invoice Ninja <code>git</code>.  Note, that I have removed everything below the <code>#4 env vars</code> as this is no longer relevant.</p>
-<pre><code>APP_URL=http://in.localhost:8003/
-APP_KEY=&lt;insert your generated key in here&gt;
-APP_DEBUG=true
-MULTI_DB_ENABLED=false
-DB_HOST1=db
-DB_PORT1=3306
-DB_USERNAME1=ninja
-DB_PASSWORD1=ninja
-DB_DATABASE1=ninja
-MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
-MYSQL_USER=ninja
-MYSQL_PASSWORD=ninja
-MYSQL_DATABASE=ninja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">nano env
+</code></pre></div><p>At this point, the below <code>env</code> is the stock version from the Invoice Ninja <code>git</code>.  Note, that I have removed everything below the <code>#4 env vars</code> as this is no longer relevant.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://in.localhost:8003/
+APP_KEY<span style="color:#f92672">=</span>&lt;insert your generated key in here&gt;
+APP_DEBUG<span style="color:#f92672">=</span>true
+MULTI_DB_ENABLED<span style="color:#f92672">=</span>false
+DB_HOST1<span style="color:#f92672">=</span>db
+DB_PORT1<span style="color:#f92672">=</span><span style="color:#ae81ff">3306</span>
+DB_USERNAME1<span style="color:#f92672">=</span>ninja
+DB_PASSWORD1<span style="color:#f92672">=</span>ninja
+DB_DATABASE1<span style="color:#f92672">=</span>ninja
+MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span>ninjaAdm1nPassword
+MYSQL_USER<span style="color:#f92672">=</span>ninja
+MYSQL_PASSWORD<span style="color:#f92672">=</span>ninja
+MYSQL_DATABASE<span style="color:#f92672">=</span>ninja
 
-#this is a system variable please do not remove
-IS_DOCKER=true
+<span style="color:#75715e">#this is a system variable please do not remove</span>
+IS_DOCKER<span style="color:#f92672">=</span>true
 
-PHANTOMJS_PDF_GENERATION=false
-</code></pre><p>It goes without saying that you should <strong>ABSOLUTELY</strong> change the password variables, namely:</p>
+PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>false
+</code></pre></div><p>It goes without saying that you should <strong>ABSOLUTELY</strong> change the password variables, namely:</p>
 <ul>
 <li>
 <p><code>DB_PASSWORD1</code></p>
@@ -91,37 +91,37 @@ PHANTOMJS_PDF_GENERATION=false
 </li>
 </ul>
 <p>If you plan on generating PDFs of invoices, change the below variable from <code>false</code> to <code>true</code>. Although, personally I still can&rsquo;t get the PDFs to work properly.</p>
-<pre><code>PHANTOMJS_PDF_GENERATION=false
-</code></pre><p>Next, the <code>APP_URL</code> variable needs to be updated to whatever your domain is.</p>
-<pre><code>APP_URL=http://invoice.example.com
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>false
+</code></pre></div><p>Next, the <code>APP_URL</code> variable needs to be updated to whatever your domain is.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://invoice.example.com
 ...
-</code></pre><p>Next, we need to update the <code>APP_KEY</code> variable with the key we generated earlier.</p>
-<pre><code>APP_KEY=base64...
-</code></pre><p>So, we should now have something like this.</p>
-<pre><code>APP_URL=http://invoice.example.com
-APP_KEY=base64abcdefghijklmn..
-APP_DEBUG=true
-MULTI_DB_ENABLED=false
-DB_HOST1=db
-DB_PORT1=3306
-DB_USERNAME1=ninja
-DB_PASSWORD1=ninjaPASSWORDthatNOoneCOULDguess
-DB_DATABASE1=ninja
-MYSQL_ROOT_PASSWORD=ninjaAdm1nPassword
-MYSQL_USER=ninja
-MYSQL_PASSWORD=ninjaPASSWORDthatNOoneCOULDguess
-MYSQL_DATABASE=ninja
+</code></pre></div><p>Next, we need to update the <code>APP_KEY</code> variable with the key we generated earlier.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_KEY<span style="color:#f92672">=</span>base64...
+</code></pre></div><p>So, we should now have something like this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_URL<span style="color:#f92672">=</span>http://invoice.example.com
+APP_KEY<span style="color:#f92672">=</span>base64abcdefghijklmn..
+APP_DEBUG<span style="color:#f92672">=</span>true
+MULTI_DB_ENABLED<span style="color:#f92672">=</span>false
+DB_HOST1<span style="color:#f92672">=</span>db
+DB_PORT1<span style="color:#f92672">=</span><span style="color:#ae81ff">3306</span>
+DB_USERNAME1<span style="color:#f92672">=</span>ninja
+DB_PASSWORD1<span style="color:#f92672">=</span>ninjaPASSWORDthatNOoneCOULDguess
+DB_DATABASE1<span style="color:#f92672">=</span>ninja
+MYSQL_ROOT_PASSWORD<span style="color:#f92672">=</span>ninjaAdm1nPassword
+MYSQL_USER<span style="color:#f92672">=</span>ninja
+MYSQL_PASSWORD<span style="color:#f92672">=</span>ninjaPASSWORDthatNOoneCOULDguess
+MYSQL_DATABASE<span style="color:#f92672">=</span>ninja
 
-#this is a system variable please do not remove
-IS_DOCKER=true
+<span style="color:#75715e">#this is a system variable please do not remove</span>
+IS_DOCKER<span style="color:#f92672">=</span>true
 
-PHANTOMJS_PDF_GENERATION=true
-</code></pre><p>Now, save all the changes and exit.</p>
+PHANTOMJS_PDF_GENERATION<span style="color:#f92672">=</span>true
+</code></pre></div><p>Now, save all the changes and exit.</p>
 <h2 id="editing-configs---docker-composeyml">Editing configs - docker-compose.yml</h2>
 <p>The changes here are more subjective and &lsquo;to your use case&rsquo;, rather than necessary, but I&rsquo;ll point out a few that I think are worth your time.</p>
 <h3 id="container_name">container_name:</h3>
 <p>This variable currently doesn&rsquo;t exist for each service, but I think its best to add these as custom values so when looking at your list of docker services, they are easier to identify.  So add the below to each service.</p>
-<pre><code>services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">services:
     server:
         ...
         container_name: invninja_server
@@ -138,22 +138,22 @@ PHANTOMJS_PDF_GENERATION=true
         ...
         container_name: invninja_db
         ...
-</code></pre><h3 id="ports">ports:</h3>
+</code></pre></div><h3 id="ports">ports:</h3>
 <p>Currently the <code>docker-compose.yml</code> has port 80 exposed for the <code>server</code>.  If this is fine for your purposes, then ignore this step.  If you need to use a different port, then change according.  For example:</p>
-<pre><code>services:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">services:
     server:
         ...
         ports: 
-            - &quot;10000:80&quot;
+            - <span style="color:#e6db74">&#34;10000:80&#34;</span>
         ...
-</code></pre><p>Now, save all the changes and exit.</p>
+</code></pre></div><p>Now, save all the changes and exit.</p>
 <h2 id="fire-it-up">Fire it up!!!</h2>
 <p>Since these files are in the same folder, ensure that you are still in the <code>../invoiceninja/dockerfiles</code> folder, and start the container.</p>
-<pre><code>docker-compose up -d
-</code></pre><h4 id="cool-your-jets">Cool your jets!!</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose up -d
+</code></pre></div><h4 id="cool-your-jets">Cool your jets!!</h4>
 <p><strong>IF</strong> you receive a <code>SQLSTATE[42S02] exception</code> complaint in your browser and a metric crap ton of tables, head back to the command line and run the following command.</p>
-<pre><code>docker-compose exec app php artisan migrate
-</code></pre><p>I had this issue <strong>everytime</strong> I ran an install.  This really should be in the documentation, but this lovely user <a href="https://github.com/invoiceninja/dockerfiles/issues/235">mentioned</a> it for us.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose exec app php artisan migrate
+</code></pre></div><p>I had this issue <strong>everytime</strong> I ran an install.  This really should be in the documentation, but this lovely user <a href="https://github.com/invoiceninja/dockerfiles/issues/235">mentioned</a> it for us.</p>
 <h4 id="continuing-setup">Continuing setup!</h4>
 <p>Wait about 30s to a 1 minute before opening the URL in the browser as it takes a while for everything to get ready.  But once that&rsquo;s done, open your browser of choice and type in the URL that you specified in the <code>env</code> file earlier.</p>
 <pre><code>http://invoice.example.com
@@ -168,8 +168,8 @@ PHANTOMJS_PDF_GENERATION=true
 <h3 id="is-your-interface-is-having-a-whinge">Is your interface is having a whinge??</h3>
 <h4 id="app_debug">APP_DEBUG</h4>
 <p>Once into my interface, and entering the company name currency of choice, I was met with a <code>debug</code> issue.  Essentially, we now need to go back to the command line, open the <code>env</code> file and set the <code>APP_DEBUG</code> value to <code>false</code>, as seen below.</p>
-<pre><code>APP_DEBUG=false
-</code></pre><p>I orginally tried doing this before firing up the container, but the whole thing refused to work. This is probably why it was set to <code>true</code> in the first place.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">APP_DEBUG<span style="color:#f92672">=</span>false
+</code></pre></div><p>I orginally tried doing this before firing up the container, but the whole thing refused to work. This is probably why it was set to <code>true</code> in the first place.</p>
 <p>Now restart the container.</p>
 <h4 id="cronjob-exclamations">Cronjob exclamations</h4>
 <p>You will notice shortly after intial setup an exclamation in the bottom left corner of the screen.  Ironically, after having done the above, and waiting a couple of minutes, just refresh the browser and that will go away.</p>
@@ -189,7 +189,7 @@ PHANTOMJS_PDF_GENERATION=true
 Prerequisites   Fresh Ubuntu Server install on a VPS / VM with sudo access.
   Optional: A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
-sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt clean &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo rebootThen, install software we will use for the server.</description>
+sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt clean &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
             <content type="html"><![CDATA[<p>This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from <a href="https://forum.invoiceninja.com/t/install-invoice-ninja-v5-on-ubuntu-20-04/4588">TechnicallyComputers</a>. Kudos to him!</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
@@ -202,56 +202,56 @@ sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;am
 </ul>
 <h2 id="install-necessary-and-extra-software">Install necessary (and extra) software</h2>
 <p>First, update the system.</p>
-<pre><code>sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt clean &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo reboot
-</code></pre><p>Then, install software we will use for the server. Note: Setup of fail2ban and UFW I&rsquo;m going to leave to you.  You can see my post on setting up Chamilo LMS where I cover that.</p>
-<pre><code>sudo apt install -y ufw \
-fail2ban \
-unzip \
-zip \
-git \
-tree \
-openssh-server \
-net-tools \
-curl \
-software-properties-common
-</code></pre><p>And some specific software we will need for this setup?</p>
-<pre><code>sudo apt install gcc g++ make php php-{fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli} mariadb-server mariadb-client curl git nginx -y
-</code></pre><p>Download and install PHP Composer</p>
-<pre><code>curl -sS https://getcomposer.org/installer -o composer-setup.php &amp;&amp; \
-sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
-</code></pre><h2 id="setup-maria-db-and-the-database">Setup Maria DB and the Database</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt upgrade -y <span style="color:#f92672">&amp;&amp;</span> sudo apt dist-upgrade -y <span style="color:#f92672">&amp;&amp;</span> sudo apt clean <span style="color:#f92672">&amp;&amp;</span> sudo apt autoremove -y <span style="color:#f92672">&amp;&amp;</span> sudo reboot
+</code></pre></div><p>Then, install software we will use for the server. Note: Setup of fail2ban and UFW I&rsquo;m going to leave to you.  You can see my post on setting up Chamilo LMS where I cover that.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y ufw <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>fail2ban <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>unzip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>zip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>git <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>tree <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>openssh-server <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>net-tools <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>curl <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>software-properties-common
+</code></pre></div><p>And some specific software we will need for this setup?</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install gcc g++ make php php-<span style="color:#f92672">{</span>fpm,bcmath,ctype,fileinfo,json,mbstring,pdo,tokenizer,xml,curl,zip,gmp,gd,mysqli<span style="color:#f92672">}</span> mariadb-server mariadb-client curl git nginx -y
+</code></pre></div><p>Download and install PHP Composer</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -sS https://getcomposer.org/installer -o composer-setup.php <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo php composer-setup.php --install-dir<span style="color:#f92672">=</span>/usr/bin --filename<span style="color:#f92672">=</span>composer
+</code></pre></div><h2 id="setup-maria-db-and-the-database">Setup Maria DB and the Database</h2>
 <p>Ok, now fire up MariaDB and also make it start up automatically with the system on reboot.  THe last command will start the securing of the DB root account.</p>
-<pre><code>sudo systemctl start mariadb
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl start mariadb
 sudo systemctl enable mariadb
 sudo mysql_secure_installation
-</code></pre><p>Follow the below to know how to handle all the questions.</p>
-<pre><code>Enter current password for root (enter for none): strong-ass-MariaDB-root-password
-Change the root password? [Y/n]: n
-Remove anonymous users? [Y/n]: y
-Disallow root login remotely? [Y/n]: y
-Remove test database and access to it? [Y/n]: y
-Reload privilege tables now? [Y/n]: y
-</code></pre><pre><code>sudo mysql -u root -p
+</code></pre></div><p>Follow the below to know how to handle all the questions.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Enter current password <span style="color:#66d9ef">for</span> root <span style="color:#f92672">(</span>enter <span style="color:#66d9ef">for</span> none<span style="color:#f92672">)</span>: strong-ass-MariaDB-root-password
+Change the root password? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: n
+Remove anonymous users? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Disallow root login remotely? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Remove test database and access to it? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Reload privilege tables now? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mysql -u root -p
 
 CREATE DATABASE ninjadb;
-CREATE USER 'ninja'@'localhost' IDENTIFIED BY 'ninjapassword';
-GRANT ALL PRIVILEGES ON ninjadb.* TO 'ninja'@'localhost' IDENTIFIED BY 'ninjapassword' WITH GRANT OPTION;
+CREATE USER <span style="color:#e6db74">&#39;ninja&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;ninjapassword&#39;</span>;
+GRANT ALL PRIVILEGES ON ninjadb.* TO <span style="color:#e6db74">&#39;ninja&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;ninjapassword&#39;</span> WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;
-</code></pre><p>Make sure to update at least the <strong>password</strong> with your prefered choice, and the DB name and user should you wish to.</p>
+</code></pre></div><p>Make sure to update at least the <strong>password</strong> with your prefered choice, and the DB name and user should you wish to.</p>
 <h2 id="install-nginx-webserver">Install Nginx (webserver)</h2>
 <p>First, let&rsquo;s remove the stock Nginx page to avoid confusion.</p>
-<pre><code>sudo rm /etc/nginx/sites-enabled/default
-</code></pre><p>Now let&rsquo;s add our own <code>.conf</code> file specifically for our project</p>
-<pre><code>sudo nano /etc/nginx/conf.d/invoiceninja.conf
-</code></pre><p>And now copy in the below, and edit as per your needs, namely: <strong>port number</strong> (normally this is set to port 80, but mine is set to something random for my own purposes), and <strong>FQDN</strong> (domain name).</p>
-<pre><code>server {
-        listen 10000 default_server;
-        listen [::]:10000 default_server;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo rm /etc/nginx/sites-enabled/default
+</code></pre></div><p>Now let&rsquo;s add our own <code>.conf</code> file specifically for our project</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo nano /etc/nginx/conf.d/invoiceninja.conf
+</code></pre></div><p>And now copy in the below, and edit as per your needs, namely: <strong>port number</strong> (normally this is set to port 80, but mine is set to something random for my own purposes), and <strong>FQDN</strong> (domain name).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">server <span style="color:#f92672">{</span>
+        listen <span style="color:#ae81ff">10000</span> default_server;
+        listen <span style="color:#f92672">[</span>::<span style="color:#f92672">]</span>:10000 default_server;
 
         root /var/www/html/invoiceninja/public;
 
-        # Add index.php to the list if you are using PHP
+        <span style="color:#75715e"># Add index.php to the list if you are using PHP</span>
         index index.php index.html index.htm;
         client_max_body_size 50M;
         gzip on;
@@ -262,72 +262,72 @@ EXIT;
 
         server_name invoice.example.com;
 
-        location / {
-                # First attempt to serve request as file, then
-                # as directory, then fall back to displaying a 404.
-                try_files $uri $uri/ =404;
-        }
+        location / <span style="color:#f92672">{</span>
+                <span style="color:#75715e"># First attempt to serve request as file, then</span>
+                <span style="color:#75715e"># as directory, then fall back to displaying a 404.</span>
+                try_files $uri $uri/ <span style="color:#f92672">=</span>404;
+        <span style="color:#f92672">}</span>
 
 
-        if (!-e $request_filename) {
-            rewrite ^(.+)$ /index.php?q= last;
-        }
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>!-e $request_filename<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            rewrite ^<span style="color:#f92672">(</span>.+<span style="color:#f92672">)</span>$ /index.php?q<span style="color:#f92672">=</span> last;
+        <span style="color:#f92672">}</span>
 
-        # pass PHP scripts to FastCGI server
-        #
-        location ~ \.php$ {
+        <span style="color:#75715e"># pass PHP scripts to FastCGI server</span>
+        <span style="color:#75715e">#</span>
+        location ~ <span style="color:#ae81ff">\.</span>php$ <span style="color:#f92672">{</span>
                 include snippets/fastcgi-php.conf;
-        #
-        #       # With php-fpm (or other unix sockets):
+        <span style="color:#75715e">#</span>
+        <span style="color:#75715e">#       # With php-fpm (or other unix sockets):</span>
                 fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        #       # With php-cgi (or other tcp sockets):
-        #       fastcgi_pass 127.0.0.1:9000;
-        }
+        <span style="color:#75715e">#       # With php-cgi (or other tcp sockets):</span>
+        <span style="color:#75715e">#       fastcgi_pass 127.0.0.1:9000;</span>
+        <span style="color:#f92672">}</span>
 
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        location ~ /\.ht {
+        <span style="color:#75715e"># deny access to .htaccess files, if Apache&#39;s document root</span>
+        <span style="color:#75715e"># concurs with nginx&#39;s one</span>
+        <span style="color:#75715e">#</span>
+        location ~ /<span style="color:#ae81ff">\.</span>ht <span style="color:#f92672">{</span>
                 deny all;
-        }
-}
-</code></pre><p>The eagle eyed among you will see that it&rsquo;s not complex, and that&rsquo;s because I&rsquo;ll have mine setup behind a reverse proxy.  But if you need a complete <code>.conf</code> assumming that this is the sole purpose of the machine this is running on, see the config mentioned within the link at the beginning of the post.</p>
+        <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>The eagle eyed among you will see that it&rsquo;s not complex, and that&rsquo;s because I&rsquo;ll have mine setup behind a reverse proxy.  But if you need a complete <code>.conf</code> assumming that this is the sole purpose of the machine this is running on, see the config mentioned within the link at the beginning of the post.</p>
 <p>Then start and enable Nginx after killing Apache.</p>
-<pre><code>sudo systemctl stop apache2
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl stop apache2
 sudo systemctl disable apache2
 sudo systemctl start nginx
 sudo systemctl enable nginx
-</code></pre><p>Test the nginx config to make sure all is well:</p>
-<pre><code>sudo nginx -t
-</code></pre><h2 id="get-invoice-ninja-files">Get Invoice Ninja files</h2>
+</code></pre></div><p>Test the nginx config to make sure all is well:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo nginx -t
+</code></pre></div><h2 id="get-invoice-ninja-files">Get Invoice Ninja files</h2>
 <p>Visit the <a href="https://github.com/invoiceninja/invoiceninja/releases">invoiceninja github release page</a> and get the latest <strong>-release</strong> version zip file.</p>
-<pre><code>cd /var/www/html
-sudo mkdir invoiceninja &amp;&amp; cd invoiceninja
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd /var/www/html
+sudo mkdir invoiceninja <span style="color:#f92672">&amp;&amp;</span> cd invoiceninja
 sudo wget https://github.com/invoiceninja/invoiceninja/releases/download/v5.1.32-release/invoiceninja.zip
 sudo unzip invoiceninja.zip
-</code></pre><h3 id="installing-and-configuring-software-and-dependencies">Installing and configuring software and dependencies</h3>
+</code></pre></div><h3 id="installing-and-configuring-software-and-dependencies">Installing and configuring software and dependencies</h3>
 <p>First move to the webroot for InvoiceNinja if not done so already.</p>
-<pre><code>cd /var/www/html/invoiceninja
-</code></pre><p>Then run the compose.  This is needed for InvoiceNinja to work.</p>
-<pre><code>sudo php /usr/bin/composer install --no-dev
-</code></pre><p>If you&rsquo;re short on memory, run this bad boy:    </p>
-<pre><code>sudo php -d memory_limit=-1 `which composer` install --no-dev
-</code></pre><p>This will generate a <em>.env</em> file with an encryption key. Wait while this runs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd /var/www/html/invoiceninja
+</code></pre></div><p>Then run the compose.  This is needed for InvoiceNinja to work.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo php /usr/bin/composer install --no-dev
+</code></pre></div><p>If you&rsquo;re short on memory, run this bad boy:    </p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo php -d memory_limit<span style="color:#f92672">=</span>-1 <span style="color:#e6db74">`</span>which composer<span style="color:#e6db74">`</span> install --no-dev
+</code></pre></div><p>This will generate a <em>.env</em> file with an encryption key. Wait while this runs.</p>
 <p>Then add that encryption key to the <em>.env</em>. Then run the auto config process.  This <strong>must</strong> be repeated if files are moved or changed in the invoiceninja directory.</p>
-<pre><code>sudo php artisan key:generate
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo php artisan key:generate
 sudo php artisan optimize
-</code></pre><p>Lastly, set folder permissions.</p>
-<pre><code>sudo chown -R www-data:www-data /var/www/html/invoiceninja
+</code></pre></div><p>Lastly, set folder permissions.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo chown -R www-data:www-data /var/www/html/invoiceninja
 sudo chmod -R g+s /var/www/html/invoiceninja
-</code></pre><p>InvoiceNinja requires some regular maintenance to take place.  Failing to do so will place a bright red exclamation logo in the bottom left of the InvoiceNinja interface.  This all takes place in <code>crontab -e</code>. Note: until you <code>reboot</code> the system, the exclamation will remain.</p>
-<pre><code>sudo -u www-data crontab -e
-</code></pre><p>Insert this:</p>
-<pre><code>* * * * * php /var/www/html/invoiceninja/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1
-</code></pre><p>Some folks have issues generating PDF&rsquo;s.  Should you have these issues, the below dependencies could fix that.</p>
-<pre><code>sudo apt-get install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-</code></pre><p>Reboot.</p>
-<pre><code>sudo reboot
-</code></pre><p>And finally, visit your IP/domain and complete the setup.</p>
+</code></pre></div><p>InvoiceNinja requires some regular maintenance to take place.  Failing to do so will place a bright red exclamation logo in the bottom left of the InvoiceNinja interface.  This all takes place in <code>crontab -e</code>. Note: until you <code>reboot</code> the system, the exclamation will remain.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo -u www-data crontab -e
+</code></pre></div><p>Insert this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">* * * * * php /var/www/html/invoiceninja/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span>
+</code></pre></div><p>Some folks have issues generating PDF&rsquo;s.  Should you have these issues, the below dependencies could fix that.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+</code></pre></div><p>Reboot.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo reboot
+</code></pre></div><p>And finally, visit your IP/domain and complete the setup.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>That&rsquo;s it! All should be working now.</p>
 ]]></content>
@@ -339,12 +339,12 @@ sudo chmod -R g+s /var/www/html/invoiceninja
             <pubDate>Fri, 18 Dec 2020 12:00:37 -0300</pubDate>
             
             <guid>https://dgibbs.me/posts/2020/12/how-to-install-chamilo-on-ubuntu-server/</guid>
-            <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from [Vultr](How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com). Kudos to those guys.
+            <description>This is a tutorial I&amp;rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from Vultr. Kudos to those guys.
 Prerequisites   Fresh Ubuntu Server install on a VPS with sudo access.
   A domain pointed at the server.
   Install necessary (and extra) software First, update the system.
 sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y &amp;amp;&amp;amp; sudo apt clean -y &amp;amp;&amp;amp; sudo reboot Then, install software we will use for the server.</description>
-            <content type="html"><![CDATA[<p>This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from <strong>[Vultr](<a href="https://www.vultr.com/docs/how-to-install-chamilo-1-11-8-on-ubuntu-18-04-lts">How to Install Chamilo 1.11.8 on Ubuntu 18.04 LTS - Vultr.com</a>)</strong>. Kudos to those guys.</p>
+            <content type="html"><![CDATA[<p>This is a tutorial I&rsquo;ve written mostly for my own purposes that I have adapted from the orginal post from <strong><a href="https://www.vultr.com/docs/how-to-install-chamilo-1-11-8-on-ubuntu-18-04-lts">Vultr</a></strong>. Kudos to those guys.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>
@@ -356,123 +356,123 @@ sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt dist-upgrade -y &amp;amp;&amp;am
 </ul>
 <h2 id="install-necessary-and-extra-software">Install necessary (and extra) software</h2>
 <p>First, update the system.</p>
-<pre><code>sudo apt upgrade -y &amp;&amp; sudo apt dist-upgrade -y &amp;&amp; sudo apt autoremove -y &amp;&amp; sudo apt clean -y &amp;&amp; sudo reboot
-</code></pre><p>Then, install software we will use for the server.</p>
-<pre><code>sudo apt install -y ufw \
-fail2ban \
-unzip \
-zip \
-git \
-tree \
-openssh-server \
-net-tools \
-curl \
-software-properties-common
-</code></pre><h2 id="update-ufw-firewall-rules">Update UFW firewall rules</h2>
-<pre><code>sudo ufw allow in ssh &amp;&amp; \
-sudo ufw allow in http &amp;&amp; \
-sudo ufw allow in https &amp;&amp; \
-sudo ufw enable
-</code></pre><h2 id="install-setup-and-secure-mariadb">Install, setup and secure MariaDB</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt upgrade -y <span style="color:#f92672">&amp;&amp;</span> sudo apt dist-upgrade -y <span style="color:#f92672">&amp;&amp;</span> sudo apt autoremove -y <span style="color:#f92672">&amp;&amp;</span> sudo apt clean -y <span style="color:#f92672">&amp;&amp;</span> sudo reboot
+</code></pre></div><p>Then, install software we will use for the server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y ufw <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>fail2ban <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>unzip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>zip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>git <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>tree <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>openssh-server <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>net-tools <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>curl <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>software-properties-common
+</code></pre></div><h2 id="update-ufw-firewall-rules">Update UFW firewall rules</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo ufw allow in ssh <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo ufw allow in http <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo ufw allow in https <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo ufw enable
+</code></pre></div><h2 id="install-setup-and-secure-mariadb">Install, setup and secure MariaDB</h2>
 <p>To install the latest version of MariaDB directly, you will need to add the MariaDB repos. Confirm the latest version <a href="https://mariadb.org/download/">here</a>, and update the version number and Ubuntu version as needed.</p>
-<pre><code>sudo apt install -y software-properties-common &amp;&amp; \
-sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 &amp;&amp; \
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirrors.accretive-networks.net/mariadb/repo/10.5/ubuntu focal main' &amp;&amp; \
-sudo apt update &amp;&amp; \
-sudo apt install -y mariadb-server
-</code></pre><p>During the install, provide a strong password for MariaDB. If not requested, no sweat, we&rsquo;ll secure it in the next block.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y software-properties-common <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo add-apt-repository <span style="color:#e6db74">&#39;deb [arch=amd64,arm64,ppc64el] http://mirrors.accretive-networks.net/mariadb/repo/10.5/ubuntu focal main&#39;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo apt update <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>sudo apt install -y mariadb-server
+</code></pre></div><p>During the install, provide a strong password for MariaDB. If not requested, no sweat, we&rsquo;ll secure it in the next block.</p>
 <p>Ok, now fire up MariaDB and also make it start up automatically with the system on reboot:</p>
-<pre><code>sudo systemctl start mariadb.service
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl start mariadb.service
 sudo systemctl enable mariadb.service
-</code></pre><p>Now, let&rsquo;s secure MariaDB:</p>
-<pre><code>sudo /usr/bin/mysql_secure_installation
-</code></pre><p>A prompt will come up, answer as below, but remember to provide a <strong>strong</strong> root password now if not done so previously.</p>
-<pre><code>Enter current password for root (enter for none): strong-ass-MariaDB-root-password
-Change the root password? [Y/n]: n
-Remove anonymous users? [Y/n]: y
-Disallow root login remotely? [Y/n]: y
-Remove test database and access to it? [Y/n]: y
-Reload privilege tables now? [Y/n]: y
-</code></pre><h2 id="install-apache">Install Apache</h2>
-<pre><code>sudo apt install -y apache2
-</code></pre><p>Go to the server URL to confirm Apache is up and running.</p>
+</code></pre></div><p>Now, let&rsquo;s secure MariaDB:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo /usr/bin/mysql_secure_installation
+</code></pre></div><p>A prompt will come up, answer as below, but remember to provide a <strong>strong</strong> root password now if not done so previously.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Enter current password <span style="color:#66d9ef">for</span> root <span style="color:#f92672">(</span>enter <span style="color:#66d9ef">for</span> none<span style="color:#f92672">)</span>: strong-ass-MariaDB-root-password
+Change the root password? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: n
+Remove anonymous users? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Disallow root login remotely? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Remove test database and access to it? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+Reload privilege tables now? <span style="color:#f92672">[</span>Y/n<span style="color:#f92672">]</span>: y
+</code></pre></div><h2 id="install-apache">Install Apache</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y apache2
+</code></pre></div><p>Go to the server URL to confirm Apache is up and running.</p>
 <p>Remove the standard Apache welcome page.</p>
-<pre><code>sudo mv /var/www/html/index.html /var/www/html/index.html.old
-</code></pre><p>Backup the default .conf file and block Apache from exposing the web root directory:</p>
-<pre><code>sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
-sudo sed -i &quot;s/Options Indexes FollowSymLinks/Options FollowSymLinks/&quot; /etc/apache2/apache2.conf
-</code></pre><p>Enable the Apache rewrite module, start the service and auto-start</p>
-<pre><code>sudo a2enmod rewrite
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mv /var/www/html/index.html /var/www/html/index.html.old
+</code></pre></div><p>Backup the default .conf file and block Apache from exposing the web root directory:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
+sudo sed -i <span style="color:#e6db74">&#34;s/Options Indexes FollowSymLinks/Options FollowSymLinks/&#34;</span> /etc/apache2/apache2.conf
+</code></pre></div><p>Enable the Apache rewrite module, start the service and auto-start</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo a2enmod rewrite
 sudo systemctl start apache2.service
 sudo systemctl enable apache2.service
-</code></pre><h2 id="install-latest-php-packages">Install latest PHP Packages</h2>
+</code></pre></div><h2 id="install-latest-php-packages">Install latest PHP Packages</h2>
 <p>In order to run the latest PHP 7.x packages, we need to add the repo:</p>
-<pre><code>sudo add-apt-repository -y ppa:ondrej/php
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo add-apt-repository -y ppa:ondrej/php
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-</code></pre><p>Install the latest 7.4 packages. Before doing so, confirm the latest version <a href="https://www.php.net/downloads.php">here</a>, and if higher the 7.4, substitute that version wherever you see <strong>7.4</strong>.</p>
-<pre><code>sudo apt install -y php7.4 php7.4-opcache php7.4-cli php7.4-curl php7.4-common php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql libapache2-mod-php7.4 php7.4-soap php7.4-xml php7.4-xmlrpc php7.4-zip php7.4-ldap php-apcu-bc
-</code></pre><p>Backup and then edit the PHP config file pertaining to Apache:</p>
-<pre><code>sudo cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/apache2/php.ini.bak
-sudo sed -i 's#;date.timezone =#date.timezone = America/Sao_Paulo#' /etc/php/7.4/apache2/php.ini
-</code></pre><p>Right, now let&rsquo;s adjust the php.ini file to meet the necessities of Chamilo LMS:</p>
-<pre><code>sudo nano /etc/php/7.4/apache2/php.ini
-</code></pre><p>Find these:</p>
-<pre><code>session.cookie_httponly =
-upload_max_filesize = 2M
-post_max_size = 8M
-</code></pre><p>And update them to look like these:</p>
-<pre><code>session.cookie_httponly = 1
-upload_max_filesize = 100M
-post_max_size = 100M
-</code></pre><h2 id="install-chamilo">Install Chamilo</h2>
+</code></pre></div><p>Install the latest 7.4 packages. Before doing so, confirm the latest version <a href="https://www.php.net/downloads.php">here</a>, and if higher the 7.4, substitute that version wherever you see <strong>7.4</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y php7.4 php7.4-opcache php7.4-cli php7.4-curl php7.4-common php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql libapache2-mod-php7.4 php7.4-soap php7.4-xml php7.4-xmlrpc php7.4-zip php7.4-ldap php-apcu-bc
+</code></pre></div><p>Backup and then edit the PHP config file pertaining to Apache:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp /etc/php/7.4/apache2/php.ini /etc/php/7.4/apache2/php.ini.bak
+sudo sed -i <span style="color:#e6db74">&#39;s#;date.timezone =#date.timezone = America/Sao_Paulo#&#39;</span> /etc/php/7.4/apache2/php.ini
+</code></pre></div><p>Right, now let&rsquo;s adjust the php.ini file to meet the necessities of Chamilo LMS:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo nano /etc/php/7.4/apache2/php.ini
+</code></pre></div><p>Find these:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">session.cookie_httponly <span style="color:#f92672">=</span>
+upload_max_filesize <span style="color:#f92672">=</span> 2M
+post_max_size <span style="color:#f92672">=</span> 8M
+</code></pre></div><p>And update them to look like these:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">session.cookie_httponly <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+upload_max_filesize <span style="color:#f92672">=</span> 100M
+post_max_size <span style="color:#f92672">=</span> 100M
+</code></pre></div><h2 id="install-chamilo">Install Chamilo</h2>
 <h3 id="setup-the-database">Setup the Database</h3>
-<pre><code>sudo mysql -u root -p
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mysql -u root -p
 
 CREATE DATABASE chamilo;
-CREATE USER 'chamilo'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON chamilo.* TO 'chamilo'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+CREATE USER <span style="color:#e6db74">&#39;chamilo&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;password&#39;</span>;
+GRANT ALL PRIVILEGES ON chamilo.* TO <span style="color:#e6db74">&#39;chamilo&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;password&#39;</span> WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;
-</code></pre><p>Make sure to update at least the <strong>password</strong> with your prefered choice, and the DB name and user should you wish to.</p>
+</code></pre></div><p>Make sure to update at least the <strong>password</strong> with your prefered choice, and the DB name and user should you wish to.</p>
 <h3 id="get-chamilo-files">Get Chamilo files</h3>
 <p>Let&rsquo;s now head to <a href="https://github.com/chamilo/chamilo-lms/releases">Chamilo&rsquo;s GitHub page</a> to confirm we have the latest version. Update the link and steps below as needed:</p>
-<pre><code>cd
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd
 wget https://github.com/chamilo/chamilo-lms/releases/download/v1.11.14/chamilo-1.11.14.tar.gz
-</code></pre><p>Extract all the files to the <em>/opt</em> directory:</p>
-<pre><code>sudo tar -zxvf chamilo-1.11.14.tar.gz -C /opt
-</code></pre><p>Create a symbolic link between the unzip directory and the webserver root directory&quot;</p>
-<pre><code>sudo ln -s /opt/chamilo-lms-1.11.14 /var/www/html/chamilo
-</code></pre><p>Modify the ownership of all Chamilo files to the <code>www-data</code> user and the <code>www-data</code> group:</p>
-<pre><code>sudo chown -R www-data:www-data /opt/chamilo-lms-1.11.14
-</code></pre><h3 id="configure-apache-virtual-server-for-chamilo">Configure Apache virtual server for Chamilo</h3>
-<pre><code>cat &lt;&lt;EOF | sudo tee /etc/apache2/sites-available/chamilo.conf
-&lt;VirtualHost *:80&gt;
-ServerAdmin admin@example.com
-DocumentRoot /var/www/html/chamilo
-ServerName chamilo.example.com
-ServerAlias example.com
-&lt;Directory /&gt;
-AllowOverride All
-Require all granted
-&lt;/Directory&gt;
-&lt;Directory /var/www/html/chamilo&gt;
-Options FollowSymLinks
-AllowOverride All
-Require all granted
-&lt;/Directory&gt;
-ErrorLog /var/log/apache2/chamilo.example.com-error_log
-CustomLog /var/log/apache2/chamilo.example.com-access_log common
-&lt;/VirtualHost&gt;
-EOF
-</code></pre><p>Update the <strong>ServerAdmin</strong>, <strong>ServerName</strong>, <strong>ServerAlias</strong>, <strong>ErrorLog</strong> and <strong>CustomLog</strong> as necessary.</p>
+</code></pre></div><p>Extract all the files to the <em>/opt</em> directory:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo tar -zxvf chamilo-1.11.14.tar.gz -C /opt
+</code></pre></div><p>Create a symbolic link between the unzip directory and the webserver root directory&quot;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo ln -s /opt/chamilo-lms-1.11.14 /var/www/html/chamilo
+</code></pre></div><p>Modify the ownership of all Chamilo files to the <code>www-data</code> user and the <code>www-data</code> group:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo chown -R www-data:www-data /opt/chamilo-lms-1.11.14
+</code></pre></div><h3 id="configure-apache-virtual-server-for-chamilo">Configure Apache virtual server for Chamilo</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat <span style="color:#e6db74">&lt;&lt;EOF | sudo tee /etc/apache2/sites-available/chamilo.conf
+</span><span style="color:#e6db74">&lt;VirtualHost *:80&gt;
+</span><span style="color:#e6db74">ServerAdmin admin@example.com
+</span><span style="color:#e6db74">DocumentRoot /var/www/html/chamilo
+</span><span style="color:#e6db74">ServerName chamilo.example.com
+</span><span style="color:#e6db74">ServerAlias example.com
+</span><span style="color:#e6db74">&lt;Directory /&gt;
+</span><span style="color:#e6db74">AllowOverride All
+</span><span style="color:#e6db74">Require all granted
+</span><span style="color:#e6db74">&lt;/Directory&gt;
+</span><span style="color:#e6db74">&lt;Directory /var/www/html/chamilo&gt;
+</span><span style="color:#e6db74">Options FollowSymLinks
+</span><span style="color:#e6db74">AllowOverride All
+</span><span style="color:#e6db74">Require all granted
+</span><span style="color:#e6db74">&lt;/Directory&gt;
+</span><span style="color:#e6db74">ErrorLog /var/log/apache2/chamilo.example.com-error_log
+</span><span style="color:#e6db74">CustomLog /var/log/apache2/chamilo.example.com-access_log common
+</span><span style="color:#e6db74">&lt;/VirtualHost&gt;
+</span><span style="color:#e6db74">EOF</span>
+</code></pre></div><p>Update the <strong>ServerAdmin</strong>, <strong>ServerName</strong>, <strong>ServerAlias</strong>, <strong>ErrorLog</strong> and <strong>CustomLog</strong> as necessary.</p>
 <p>Then, create the symbolic links to the <code>/etc/apache2/sites-enabled</code> directory, while deleting the Apache default link.</p>
-<pre><code>sudo rm /etc/apache2/sites-enabled/000-default.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo rm /etc/apache2/sites-enabled/000-default.conf
 sudo ln -s /etc/apache2/sites-available/chamilo.conf /etc/apache2/sites-enabled/
-</code></pre><p>Finally, restart Apache so all the changes are activated.</p>
-<pre><code>sudo systemctl restart apache2.service
-</code></pre><h3 id="complete-the-install-in-the-browser">Complete the install in the browser</h3>
+</code></pre></div><p>Finally, restart Apache so all the changes are activated.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl restart apache2.service
+</code></pre></div><h3 id="complete-the-install-in-the-browser">Complete the install in the browser</h3>
 <p>Open up your browser and navigate to your server, for example: <code>http://chamilo.iamamazing.com</code>, and click on <strong>Install Chamilo</strong>. From here on, fill out the details as requested, but here is a quick guide for you.</p>
 <ul>
 <li><code>Step 1 - Installation Language</code>: Choose the language of choice and then click the <code>Next</code> button.</li>
@@ -486,82 +486,81 @@ pre-set administrator password, fill in the other fields accordingly, and then c
 </ul>
 <h3 id="post-install-safety-measure-do-not-skip-this">Post-Install Safety Measure: DO NOT SKIP THIS!!!</h3>
 <p>In order to tighten security of the installation folders, we need to change their permissions:</p>
-<pre><code>sudo chmod -R 0555 /var/www/html/chamilo/app/config
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo chmod -R <span style="color:#ae81ff">0555</span> /var/www/html/chamilo/app/config
 sudo rm -rf /var/www/html/chamilo/main/install
-</code></pre><h2 id="fail2ban">Fail2Ban</h2>
+</code></pre></div><h2 id="fail2ban">Fail2Ban</h2>
 <p>Sourced from: <a href="https://www.howtogeek.com/675010/how-to-secure-your-linux-computer-with-fail2ban/">How to Secure Your Linux Server with fail2ban</a><a href="https://www.howtogeek.com/675010/how-to-secure-your-linux-computer-with-fail2ban/">How to Secure Your Linux Server with fail2ban</a></p>
 <p>Firstly, install fail2ban.</p>
-<pre><code>sudo apt-get install fail2ban
-</code></pre><h3 id="configuring-fail2ban">Configuring fail2ban</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get install fail2ban
+</code></pre></div><h3 id="configuring-fail2ban">Configuring fail2ban</h3>
 <p>fail2ban creates &lsquo;jails&rsquo; in .conf files. This standard config is removed each time fail2ban upgrades, so we&rsquo;ll make a customized file.</p>
 <p>So, lets make a copy of the default file and then edit our own version.</p>
-<pre><code>sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 sudo nano /etc/fail2ban/jail.local
-</code></pre><p>Scroll down to the <strong>[DEFAULT]</strong> and <strong>[sshd]</strong> sections, that come up from about line 90 onwards. It appears near the top too, but ignore that. Find the following lines and update as below. See the source link above for further details of each.</p>
+</code></pre></div><p>Scroll down to the <strong>[DEFAULT]</strong> and <strong>[sshd]</strong> sections, that come up from about line 90 onwards. It appears near the top too, but ignore that. Find the following lines and update as below. See the source link above for further details of each.</p>
 <p>[DEFAULT] section:</p>
-<pre><code>ignoreip = 127.0.0.1/8 ::1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ignoreip <span style="color:#f92672">=</span> 127.0.0.1/8 ::1
 
-bantime = 24h
+bantime <span style="color:#f92672">=</span> 24h
 
-findtime = 5m
+findtime <span style="color:#f92672">=</span> 5m
 
-maxretry = 3
-</code></pre><p>[sshd] section: <strong>ADD</strong> these 2 lines to the end of the [sshd] section.</p>
-<pre><code>maxretry = 3
-enable = true
-</code></pre><h3 id="enable-fail2ban">Enable fail2ban</h3>
+maxretry <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</code></pre></div><p>[sshd] section: <strong>ADD</strong> these 2 lines to the end of the [sshd] section.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">maxretry <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+enable <span style="color:#f92672">=</span> true
+</code></pre></div><h3 id="enable-fail2ban">Enable fail2ban</h3>
 <p>Enable the service and auto-start.</p>
-<pre><code>sudo systemctl enable fail2ban
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
-</code></pre><p>Check that fail2ban is working.</p>
-<pre><code>sudo systemctl status fail2ban.service
-</code></pre><p>Check fail2ban status. This should show the active jail.</p>
-<pre><code>sudo fail2ban-client status
-</code></pre><p>To show the exact status of the jail we activated. It will show any IPs that are banned.</p>
-<pre><code>sudo fail2ban-client status sshd
-</code></pre><p>Testing the jail: see source link above.</p>
+</code></pre></div><p>Check that fail2ban is working.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl status fail2ban.service
+</code></pre></div><p>Check fail2ban status. This should show the active jail.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo fail2ban-client status
+</code></pre></div><p>To show the exact status of the jail we activated. It will show any IPs that are banned.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo fail2ban-client status sshd
+</code></pre></div><p>Testing the jail: see source link above.</p>
 <h3 id="unbanning-an-ip">Unbanning an IP</h3>
 <p>After seeing the banned IP from above, use the command below, inserting the appropriate IP.</p>
-<pre><code>sudo fail2ban-client set sshd unbanip 192.168.4.25
-</code></pre><p>Now it can try again.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo fail2ban-client set sshd unbanip 192.168.4.25
+</code></pre></div><p>Now it can try again.</p>
 <h2 id="lets-encrypt-certificate">Let&rsquo;s Encrypt Certificate</h2>
 <p>This part is adapted from a [Digital Ocean tutorial](<a href="https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04">How To Secure Apache with Let's Encrypt on Ubuntu 20.04 | DigitalOcean</a>).</p>
 <h3 id="certbot-setup">Certbot setup</h3>
 <p>SSL certs are a <strong>must have</strong> so let&rsquo;s hook them up.</p>
 <p>Firstly, install the certbot.</p>
-<pre><code>sudo apt install -y certbot python3-certbot-apache
-</code></pre><p>Confirm your <code>ServerName</code> and <code>ServerAlias</code> details in your chamilo.conf file as we will need these for the cert request.</p>
-<pre><code>sudo nano /etc/apache2/sites-available/chamilo.conf
-</code></pre><p>Let&rsquo;s quickly recheck that our Apahce files are all good and then reload Apache incase we made changes.</p>
-<pre><code>sudo apache2ctl configtest
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install -y certbot python3-certbot-apache
+</code></pre></div><p>Confirm your <code>ServerName</code> and <code>ServerAlias</code> details in your chamilo.conf file as we will need these for the cert request.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo nano /etc/apache2/sites-available/chamilo.conf
+</code></pre></div><p>Let&rsquo;s quickly recheck that our Apahce files are all good and then reload Apache incase we made changes.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apache2ctl configtest
 sudo systemctl reload apache2
-</code></pre><h3 id="allow-https-through-the-firewall">Allow HTTPS through the firewall</h3>
+</code></pre></div><h3 id="allow-https-through-the-firewall">Allow HTTPS through the firewall</h3>
 <p>Confirm the current status.</p>
-<pre><code>sudo ufw status
-</code></pre><p>If HTTP and HTTPS aren&rsquo;t allowed through, please refer back to the UFW setup above.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo ufw status
+</code></pre></div><p>If HTTP and HTTPS aren&rsquo;t allowed through, please refer back to the UFW setup above.</p>
 <h3 id="obtain-ssl-certificate">Obtain SSL Certificate</h3>
-<pre><code>sudo certbot --apache
-</code></pre><p>A script will start to configure SSL.  You will be asked to give an email, and you must in order to receive notices of expiring certs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo certbot --apache
+</code></pre></div><p>A script will start to configure SSL.  You will be asked to give an email, and you must in order to receive notices of expiring certs.</p>
 <p>When asked, agree to Let&rsquo;s Encrypt&rsquo;s TOS, by pressing <strong>A</strong>.</p>
 <p>Certbot will then ask you which domains you want to get certs for.  This is where having accurate ServerName and ServerAlias details is important.</p>
 <p>When asked whether you want to redirect traffic, chose option <code>2</code> for YES.  This will force all conenctions over HTTPS.</p>
-<pre><code>Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 1: No redirect - Make no further changes to the webserver configuration.
-2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
-new sites, or if you're confident your site works on HTTPS. You can undo this
-change by editing your web server's configuration.
+2: Redirect - Make all requests redirect to secure HTTPS access. Choose this <span style="color:#66d9ef">for</span>
+new sites, or <span style="color:#66d9ef">if</span> you<span style="color:#e6db74">&#39;re confident your site works on HTTPS. You can undo this
+</span><span style="color:#e6db74">change by editing your web server&#39;</span>s configuration.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
-
-</code></pre><p>If you get the message below, you&rsquo;re golden!</p>
-<pre><code>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number <span style="color:#f92672">[</span>1-2<span style="color:#f92672">]</span> <span style="color:#66d9ef">then</span> <span style="color:#f92672">[</span>enter<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>press <span style="color:#e6db74">&#39;c&#39;</span> to cancel<span style="color:#f92672">)</span>: <span style="color:#ae81ff">2</span>
+</code></pre></div><p>If you get the message below, you&rsquo;re golden!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Congratulations! You have successfully enabled https://your_domain and
 https://www.your_domain
 
 You should test your configuration at:
-https://www.ssllabs.com/ssltest/analyze.html?d=your_domain
-https://www.ssllabs.com/ssltest/analyze.html?d=www.your_domain
+https://www.ssllabs.com/ssltest/analyze.html?d<span style="color:#f92672">=</span>your_domain
+https://www.ssllabs.com/ssltest/analyze.html?d<span style="color:#f92672">=</span>www.your_domain
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 IMPORTANT NOTES:
@@ -571,8 +570,8 @@ IMPORTANT NOTES:
    /etc/letsencrypt/live/your_domain/privkey.pem
    Your cert will expire on 2020-07-27. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot again
-   with the &quot;certonly&quot; option. To non-interactively renew *all* of
-   your certificates, run &quot;certbot renew&quot;
+   with the <span style="color:#e6db74">&#34;certonly&#34;</span> option. To non-interactively renew *all* of
+   your certificates, run <span style="color:#e6db74">&#34;certbot renew&#34;</span>
  - Your account credentials have been saved in your Certbot
    configuration directory at /etc/letsencrypt. You should make a
    secure backup of this folder now. This configuration directory will
@@ -580,24 +579,24 @@ IMPORTANT NOTES:
    making regular backups of this folder is ideal.
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to ISRG / Let<span style="color:#960050;background-color:#1e0010">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
-</code></pre><p>You can confirm your SSL cert and it&rsquo;s grade over at [SSL Labs Server Test](<a href="https://www.ssllabs.com/ssltest/">SSL Server Test (Powered by Qualys SSL Labs)</a>).</p>
+</code></pre></div><p>You can confirm your SSL cert and it&rsquo;s grade over at [SSL Labs Server Test](<a href="https://www.ssllabs.com/ssltest/">SSL Server Test (Powered by Qualys SSL Labs)</a>).</p>
 <h3 id="verify-certbot-auto-renewal">Verify Certbot Auto-Renewal</h3>
 <p>Our certbot package will automatically auto-renew our certificate.  To check the status of this service, let&rsquo;s use:</p>
-<pre><code>sudo systemctl status certbot.timer
-</code></pre><p>Your output should look like this.</p>
-<pre><code>Output
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl status certbot.timer
+</code></pre></div><p>Your output should look like this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Output
 ● certbot.timer - Run certbot twice daily
-     Loaded: loaded (/lib/systemd/system/certbot.timer; enabled; vendor preset: enabled)
-     Active: active (waiting) since Tue 2020-04-28 17:57:48 UTC; 17h ago
+     Loaded: loaded <span style="color:#f92672">(</span>/lib/systemd/system/certbot.timer; enabled; vendor preset: enabled<span style="color:#f92672">)</span>
+     Active: active <span style="color:#f92672">(</span>waiting<span style="color:#f92672">)</span> since Tue 2020-04-28 17:57:48 UTC; 17h ago
     Trigger: Wed 2020-04-29 23:50:31 UTC; 12h left
    Triggers: ● certbot.service
 
-Apr 28 17:57:48 fine-turtle systemd[1]: Started Run certbot twice daily.
-</code></pre><p>And if you want to test the renewal process, run this.</p>
-<pre><code>sudo certbot renew --dry-run
-</code></pre><h2 id="conclusion">Conclusion</h2>
+Apr <span style="color:#ae81ff">28</span> 17:57:48 fine-turtle systemd<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>: Started Run certbot twice daily.
+</code></pre></div><p>And if you want to test the renewal process, run this.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo certbot renew --dry-run
+</code></pre></div><h2 id="conclusion">Conclusion</h2>
 <p>That&rsquo;s it! All should be working now.</p>
 ]]></content>
         </item>
