@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>darryl gibbs</title>
   <subtitle>I'm blogging my learnings on the road to becoming an I.T. professional.</subtitle>
-  <updated>2024-12-07T14:31:41-03:00</updated>
+  <updated>2024-12-07T15:37:36-03:00</updated>
   <author>
     <name>Darryl Gibbs</name>
     <uri>http://localhost:4000/</uri>
@@ -29,7 +29,7 @@
     <id>http://localhost:4000/posts/ansible-all-distro-docker-install/</id>
     <content type="text/html" src="http://localhost:4000/posts/ansible-all-distro-docker-install/" />
     <author>
-      <name>darryl gibbs</name>
+      <name>testuser</name>
     </author>
 
   
@@ -61,12 +61,10 @@ The idea here, is to have on...</summary>
     <id>http://localhost:4000/posts/how-to-install-invoice-ninja-5-in-docker-compose/</id>
     <content type="text/html" src="http://localhost:4000/posts/how-to-install-invoice-ninja-5-in-docker-compose/" />
     <author>
-      <name>darryl gibbs</name>
+      <name>darryl</name>
     </author>
 
   
-    
-    <category term="homelab" />
     
     <category term="tutorial" />
     
@@ -87,12 +85,10 @@ The idea here, is to have on...</summary>
     <id>http://localhost:4000/posts/how-to-install-invoice-ninja-5-on-ubuntu-server/</id>
     <content type="text/html" src="http://localhost:4000/posts/how-to-install-invoice-ninja-5-on-ubuntu-server/" />
     <author>
-      <name>darryl gibbs</name>
+      <name>darryl</name>
     </author>
 
   
-    
-    <category term="homelab" />
     
     <category term="tutorial" />
     
