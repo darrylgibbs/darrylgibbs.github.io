@@ -4,7 +4,7 @@
   <id>http://localhost:4000/</id>
   <title>darryl gibbs</title>
   <subtitle>I'm blogging my learnings on the road to becoming an I.T. professional.</subtitle>
-  <updated>2024-12-07T15:45:02-03:00</updated>
+  <updated>2024-12-10T09:46:05-03:00</updated>
   <author>
     <name>Darryl Gibbs</name>
     <uri>http://localhost:4000/</uri>
@@ -17,6 +17,38 @@
   <icon>/assets/img/favicons/favicon.ico</icon>
   <logo>/assets/img/favicons/favicon-96x96.png</logo>
 
+
+  
+  <entry>
+    <title>Homelab Update Dec 2024</title>
+    <link href="http://localhost:4000/posts/homelab-update-dec-2024/" rel="alternate" type="text/html" title="Homelab Update Dec 2024" />
+    <published>2024-12-07T10:00:00-03:00</published>
+  
+    <updated>2024-12-07T10:00:00-03:00</updated>
+  
+    <id>http://localhost:4000/posts/homelab-update-dec-2024/</id>
+    <content type="text/html" src="http://localhost:4000/posts/homelab-update-dec-2024/" />
+    <author>
+      <name>darryl</name>
+    </author>
+
+  
+    
+    <category term="homelab" />
+    
+    <category term="layout" />
+    
+  
+
+  <summary>As with all good I.T. people these days, I have a homelab.  An environment within my home that allows to freely learn new skills without breaking anything in production. At least anything in production of my employer.
+
+Below you will find the current layout plan, proving a bried overview of everything, and below that some descriptions of what is what.
+
+Layout
+
+Feel free to click the image to en...</summary>
+
+  </entry>
 
   
   <entry>
